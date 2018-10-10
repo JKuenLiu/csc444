@@ -2,4 +2,4 @@
 lending/borrowing web application
 
 Members:
-*Jeffrey Liu
+* Jeffrey Liu
