@@ -22,3 +22,9 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+=======
+# csc444
+lending/borrowing web application
+Members:
+Jeffrey Liu
+>>>>>>> df7a48c9b357269195119a19047433f9b2131eb4
