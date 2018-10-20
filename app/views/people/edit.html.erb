@@ -1,0 +1,27 @@
+<%=
+
+  form_with scope: :person, url: person_path, :method => "put", local: true do |form| %>
+  <p>
+    <%= form.label :fname %><br>
+    <%= form.text_field :fname %>
+  </p>
+
+  <p>
+    <%= form.label :lname %><br>
+    <%= form.text_field :lname %>
+  </p>
+
+  <p>
+    <%= form.label :address %><br>
+    <%= form.text_field :addr %>
+  </p>
+
+  <p>
+    <%= form.label :phone %><br>
+    <%= form.text_field :phone %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
