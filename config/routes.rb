@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'user_homepage/index'
   get 'homepage/index'
 
   resources :people
