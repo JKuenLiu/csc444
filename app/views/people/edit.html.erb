@@ -1,24 +1,24 @@
 <%=
 
-  form_with scope: :person, url: person_path, :method => "put", local: true do |form| %>
+  form_with scope: :person, url: profile_path, :method => "put", local: true do |form| %>
   <p>
-    <%= form.label :fname %><br>
-    <%= form.text_field :fname %>
+    <%= form.label :fname, "First Name" %><br>
+    <%= form.text_field :fname, placeholder: @person.fname%>
   </p>
 
   <p>
-    <%= form.label :lname %><br>
-    <%= form.text_field :lname %>
+    <%= form.label :lname, "Last Name" %><br>
+    <%= form.text_field :lname, placeholder: @person.lname%>
   </p>
 
   <p>
-    <%= form.label :address %><br>
-    <%= form.text_field :addr %>
+    <%= form.label :address, "Address" %><br>
+    <%= form.text_field :addr, placeholder: @person.addr%>
   </p>
 
   <p>
-    <%= form.label :phone %><br>
-    <%= form.text_field :phone %>
+    <%= form.label :phone, "Phone Number" %><br>
+    <%= form.text_field :phone, placeholder: @person.phone%>
   </p>
 
   <p>

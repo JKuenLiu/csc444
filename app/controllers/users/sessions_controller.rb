@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+
+  #Allows user to access login page without requiring to be logged in
+  skip_before_action :require_login
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
