@@ -4,8 +4,5 @@ class HomepageController < ApplicationController
   skip_before_action :require_login
 
   def index
-    if user_signed_in?
-      redirect_to :controller => 'user_homepage', :action => 'index'
-    end
   end
 end
