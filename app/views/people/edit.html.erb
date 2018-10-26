@@ -20,6 +20,11 @@
     <%= form.label :phone, "Phone Number" %><br>
     <%= form.text_field :phone, placeholder: @person.phone%>
   </p>
+  
+  <p>
+    <%= form.label :avatar, "Profile Picture" %><br>
+    <%= form.file_field :avatar %>
+  </p>
 
   <p>
     <%= form.submit %>
