@@ -6,11 +6,12 @@ Rails.application.routes.draw do
   get 'profile/edit', to: 'people#edit'
   put 'profile', to: 'people#update'
 
-  get 'item/index', to: 'item#index'
-  get 'item/show', to: 'item#show'
-  get 'item/update', to: 'item#update'
-  get 'item/edit', to: 'item#edit'
+  #get 'item/index', to: 'item#index'
+  #get 'item/show', to: 'item#show'
+  #get 'item/update', to: 'item#update'
+  #get 'item/edit', to: 'item#edit'
 
+  resources :item
   root 'homepage#index'
   devise_for :users, controllers: {registrations: 'users/registrations',sessions: 'users/sessions'}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -4,4 +4,14 @@
     <h1> Your Borrowed Items: </h1>
 <% end %>
 
+<table>
+    <% if @user_items %>
+        <% @user_items.each do |item| %>
+            <tr>
+                <td><%= item.name %></td>
+            </tr>
+        <% end %>
+    <% end %>
+</table>
+
 <%= link_to 'Back', homepage_index_path %>
