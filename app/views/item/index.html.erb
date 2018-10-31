@@ -1,0 +1,7 @@
+<% if @show_your_items == 'true' %>
+    <h1> Your Items: </h1>
+<% else %>
+    <h1> Your Borrowed Items: </h1>
+<% end %>
+
+<%= link_to 'Back', homepage_index_path %>

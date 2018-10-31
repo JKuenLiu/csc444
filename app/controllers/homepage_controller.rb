@@ -4,5 +4,7 @@ class HomepageController < ApplicationController
   skip_before_action :require_login
 
   def index
+      #this is just some code to add data into for a user
+      
   end
 end
