@@ -3,8 +3,8 @@
       Logged in as <strong> <%= current_user.email %></strong>.
       <%= link_to 'View profile', profile_path, :class => 'navbar-link' %> |
       <%= link_to 'Edit Login Settings', edit_user_registration_path %> |
-      <%= link_to 'Your Items', :controller => :item, :action => :index, :your_items => 'true' %> |
-      <%= link_to 'Borrowed Items', :controller => :item, :action => :index, :your_items => 'false' %> |
+      <%= link_to 'Your Items', :controller => :items, :action => :index, :your_items => 'true' %> |
+      <%= link_to 'Borrowed Items', :controller => :items, :action => :index, :your_items => 'false' %> |
       <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
     <% else %>
       <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
