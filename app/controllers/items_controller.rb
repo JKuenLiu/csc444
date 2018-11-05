@@ -1,19 +1,26 @@
 class ItemsController < ApplicationController
 	def index
+        @person = Person.find_by_user_id(current_user.id)
         @show_your_items = params[:your_items]
         if @show_your_items == 'true'
-            @user_items = current_user.items
+            @user_items = @person.items
         else
             user_id = current_user.id
-            @user_items = Item.where(current_holder: user_id)
+            @user_items = Item.where(current_holder: person_id)
         end
+    end
+    def update
+    end
+
+    def edit
     end
 
     def show
     end
 
     def new
-        @item = Item.new
+        @person = Person.find_by_user_id(current_user.id)
+        @item = @person.items.create()
     end
 
     # def edit
@@ -21,13 +28,9 @@ class ItemsController < ApplicationController
     # end
 
     def create
-
-    end
-
-    def update
-    end
-
-    def edit
+        @person = Person.find_by_user_id(current_user.id)
+        @item = @person.items.create(item_params)
+        redirect_to item_path(@item)
     end
 
     private

@@ -9,9 +9,10 @@ class CreateItems < ActiveRecord::Migration[5.2]
       t.string :status
       t.string :owner
       t.string :current_holder
-      t.references :user, foreign_key: true
+      t.references :person, foreign_key: true
 
       t.timestamps
     end
   end
 end
+

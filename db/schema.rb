@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(version: 2018_10_26_011421) do
     t.string "status"
     t.string "owner"
     t.string "current_holder"
-    t.integer "user_id"
+    t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_items_on_user_id"
+    t.index ["person_id"], name: "index_items_on_person_id"
   end
 
   create_table "people", force: :cascade do |t|

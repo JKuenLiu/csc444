@@ -4,6 +4,7 @@ class HomepageController < ApplicationController
         #this is just some code to add data into for a user
         #create_dummy_data
         #create_dummy_data
+        @item = Item.new
     end
 
     private
