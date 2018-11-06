@@ -19,10 +19,9 @@ class ItemsController < ApplicationController
         @item = Item.find(params[:id])
     end
 
-    # def new
-    #     @person = Person.find_by_user_id(current_user.id)
-    #     @item = @person.items.create()
-    # end
+    def new
+        @item = Item.new
+    end
 
     # def edit
 
@@ -32,6 +31,13 @@ class ItemsController < ApplicationController
         @person = Person.find_by_user_id(current_user.id)
         @item = @person.items.create(item_params)
         redirect_to item_path(@item)
+    end
+
+    def destroy
+        @person = Person.find_by_user_id(current_user.id)
+        @item = @person.items.find(params[:id])
+        @item.destroy
+        redirect_to items_path
     end
 
     private

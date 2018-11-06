@@ -11,3 +11,8 @@
 
 <h3>Category</h3>
 <p><%= @item.category %></p>
+
+<%= link_to 'Back', items_path %>
+<%= link_to 'Remove Item', [@item],
+               method: :delete,
+               data: { confirm: 'Are you sure?' } %>
