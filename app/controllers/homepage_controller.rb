@@ -1,10 +1,8 @@
 class HomepageController < ApplicationController
     skip_before_action :require_login
     def index
-        #this is just some code to add data into for a user
-        #create_dummy_data
-        #create_dummy_data
         @item = Item.new
+        @all_items = Item.all
     end
 
     private
