@@ -6,7 +6,7 @@ class ItemsController < ApplicationController
             @user_items = @person.items
         else
             user_id = current_user.id
-            @user_items = Item.where(current_holder: person_id)
+            @user_items = Item.where(current_holder: @person.id)
         end
     end
     def update
@@ -16,12 +16,13 @@ class ItemsController < ApplicationController
     end
 
     def show
+        @item = Item.find(params[:id])
     end
 
-    def new
-        @person = Person.find_by_user_id(current_user.id)
-        @item = @person.items.create()
-    end
+    # def new
+    #     @person = Person.find_by_user_id(current_user.id)
+    #     @item = @person.items.create()
+    # end
 
     # def edit
 
