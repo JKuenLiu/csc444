@@ -1,7 +1,7 @@
 class HomepageController < ApplicationController
     skip_before_action :require_login
     def index
-        @item = Item.new
+        #@item = Item.new
         @all_items = Item.all
     end
 

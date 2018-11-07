@@ -30,7 +30,11 @@ class ItemsController < ApplicationController
     def create
         @person = Person.find_by_user_id(current_user.id)
         @item = @person.items.create(item_params)
-        redirect_to item_path(@item)
+        if @item.errors.any?
+            render 'new'
+        else
+            redirect_to item_path(@item)
+        end
     end
 
     def destroy
