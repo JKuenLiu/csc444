@@ -16,16 +16,13 @@ class ItemsController < ApplicationController
     end
 
     def show
+        @person = Person.find_by_user_id(current_user.id)
         @item = Item.find(params[:id])
     end
 
     def new
         @item = Item.new
     end
-
-    # def edit
-
-    # end
 
     def create
         @person = Person.find_by_user_id(current_user.id)
@@ -38,6 +35,18 @@ class ItemsController < ApplicationController
         @item = @person.items.find(params[:id])
         @item.destroy
         redirect_to items_path
+    end
+
+    def request_item
+        puts '-----------------------REQUEST CALLED-----------------------'
+        @person = Person.find_by_user_id(current_user.id)
+        transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
+        @transaction = Transaction.new(transaction_params)
+        if @transaction.save
+            puts 'Success'
+        else
+            puts 'Error'
+        end
     end
 
     private

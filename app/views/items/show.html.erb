@@ -12,6 +12,23 @@
 <h3>Category</h3>
 <p><%= @item.category %></p>
 
+
+<% if @person.items.include?(@item) %>
+	<%= button_to 'Request this Item', {}, disabled: true %>
+<% else %>
+	<% if Transaction.where(item_id: @item.id).order("date").count > 0 %>
+		<% if Transaction.where(item_id: @item.id).order("date").last.requested? %>
+			<%= button_to 'Request this Item', {}, disabled: true %>
+		<% else %>
+			<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
+		<% end %>
+	<% else %>
+		<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
+	<% end %>
+<% end %>
+
+
+<br>
 <%= link_to 'Back', items_path %>
 <%= link_to 'Remove Item', [@item],
                method: :delete,

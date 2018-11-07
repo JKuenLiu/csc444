@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   #get 'item/edit', to: 'item#edit'
 
   resources :items
+  post 'items/request_item'
+
   root 'homepage#index'
   devise_for :users, controllers: {registrations: 'users/registrations',sessions: 'users/sessions'}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
