@@ -44,6 +44,7 @@ class ItemsController < ApplicationController
     def request_item
         puts '-----------------------REQUEST CALLED-----------------------'
         @person = Person.find_by_user_id(current_user.id)
+        @item = Item.find(params[:id])
         transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
         @transaction = Transaction.new(transaction_params)
         if @transaction.save
@@ -51,6 +52,7 @@ class ItemsController < ApplicationController
         else
             puts 'Error'
         end
+        redirect_to @item
     end
 
     private
