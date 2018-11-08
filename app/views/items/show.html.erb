@@ -42,7 +42,7 @@
 
 
 <br>
-<%= link_to 'Back', items_path %>
+<%= link_to 'Back', :back %>
 
 <% if @person.items.include?(@item) %>
 	<%= link_to 'Remove Item', [@item],
