@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get 'homepage/history'
   get 'homepage/notifications'
+  post 'homepage/approve_request'
 
   #Profile routes
   get 'profile', to: 'people#show'

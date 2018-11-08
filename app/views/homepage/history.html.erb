@@ -1,3 +1,26 @@
 <h1>History</h1>
 
+<table>
+    <% if @transactions.count > 0 %>
+        <% @transactions.each do |transaction| %>
+        	<% transaction_person = Person.find(transaction.person_id) %>
+        	<% transaction_item = Item.find(transaction.item_id) %>
+            <tr>
+                <td><%= transaction.date %></td>
+            	<% if transaction.requested? %>
+            		<td><%= transaction_person.fname %> <%= transaction_person.lname %> has requested to borrow your item <%= transaction_item.name %></td>
+            	<% end %>
+
+                <% if transaction.approved? %>
+                    <td>You have approved <%= transaction_person.fname %> <%= transaction_person.lname %> to borrow your item <%= transaction_item.name %></td>
+                <% end %>
+
+                <% if transaction.returned? %>
+                    <td><%= transaction_person.fname %> <%= transaction_person.lname %> has returned your item <%= transaction_item.name %></td>
+                <% end %>
+            </tr>
+        <% end %>
+    <% end %>
+</table>
+
 <%= link_to 'Back', homepage_index_path %>

@@ -16,11 +16,24 @@
 <% if @person.items.include?(@item) %>
 	<%= button_to 'Request this Item', {}, disabled: true %>
 <% else %>
-	<% if Transaction.where(item_id: @item.id).order("date").count > 0 %>
-		<% if Transaction.where(item_id: @item.id).order("date").last.requested? %>
-			<%= button_to 'Request this Item', {}, disabled: true %>
+	<% transaction_with_item = Transaction.where(item_id: @item.id).order("date") %>
+	<% if transaction_with_item.count > 0 %>
+		<!-- check if you have already requested this item -->
+		<% transaction_with_item_returned = transaction_with_item.where(status: :returned) %>
+		<% if transaction_with_item_returned.count > 0 %>
+			<% last_returned_date = transaction_with_item_returned.last.date %>
+			<% transactions_after_last_returned_date = transaction_with_item.where("date > ?", last_returned_date) %>
+			<% if transactions_after_last_returned_date.where(person_id: @person.id, status: :requested).count > 0 %>
+				<%= button_to 'Request this Item', {}, disabled: true %>
+			<% else %>
+				<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
+			<% end %>
 		<% else %>
-			<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
+			<% if transaction_with_item.where(person_id: @person.id, status: :requested).count > 0 %>
+				<%= button_to 'Request this Item', {}, disabled: true %>
+			<% else %>
+				<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
+			<% end %>
 		<% end %>
 	<% else %>
 		<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>

@@ -6,12 +6,30 @@ class HomepageController < ApplicationController
     end
 
     def history
-
+        @person = Person.find_by_user_id(current_user.id)
+        @items = @person.items
+        @transactions = Transaction.where(item_id: @items.map(&:id)).order(date: :desc)
     end
 
 
     def notifications
+        @person = Person.find_by_user_id(current_user.id)
+        @items = @person.items
+        @transactions = Transaction.where(item_id: @items.map(&:id)).order(date: :desc)
+    end
 
+    def approve_request
+        puts "---------approve_request-----------"
+        transaction_params = {:person_id => params[:person_id], :item_id => params[:item_id], :date => DateTime.now, :status => :approved}
+        puts transaction_params
+        @transaction = Transaction.new(transaction_params)
+        if @transaction.save
+            puts 'Success'
+        else
+            puts 'Error'
+        end
+
+        redirect_to homepage_notifications_path
     end
 
     private
