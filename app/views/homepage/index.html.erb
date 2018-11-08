@@ -14,6 +14,11 @@
     <% end %>
 </p>
 
+<%= form_tag(homepage_index_path, method: :get) do %>
+  <%= text_field_tag :term, params[:term] %>
+  <%= submit_tag 'Search' %>
+<% end %>
+
 <h1> Items to Borrow </h1>
 <table>
     <% if @all_items %>

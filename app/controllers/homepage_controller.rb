@@ -2,7 +2,11 @@ class HomepageController < ApplicationController
     skip_before_action :require_login
     def index
         #@item = Item.new
-        @all_items = Item.all
+        @all_items = if params[:term]
+                     Item.where('name LIKE ?', "%#{params[:term]}%")
+                 else
+                     Item.all
+                 end
     end
 
     def history
