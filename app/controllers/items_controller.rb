@@ -37,12 +37,16 @@ class ItemsController < ApplicationController
     def destroy
         @person = Person.find_by_user_id(current_user.id)
         @item = @person.items.find(params[:id])
+
+        # destroy transactions related to this item
+        @transactions = Transaction.where(id: @items.map(&:id))
+        @transactions.destroy_all
+
         @item.destroy
         redirect_to items_path
     end
 
     def request_item
-        puts '-----------------------REQUEST CALLED-----------------------'
         @person = Person.find_by_user_id(current_user.id)
         @item = Item.find(params[:id])
         transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
