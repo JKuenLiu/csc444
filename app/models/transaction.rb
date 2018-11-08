@@ -1,3 +1,3 @@
 class Transaction < ApplicationRecord
-	enum status: [:requested, :approved, :lent]
+	enum status: [:requested, :approved, :returned]
 end

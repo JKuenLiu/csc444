@@ -5,6 +5,15 @@ class HomepageController < ApplicationController
         @all_items = Item.all
     end
 
+    def history
+
+    end
+
+
+    def notifications
+
+    end
+
     private
     #hacky function made to do some simple data entry. Be careful when you use
     #this function because it will create new entries every time you call it in
