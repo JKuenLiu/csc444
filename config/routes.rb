@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get 'homepage/index'
 
+  get 'homepage/history'
+  get 'homepage/notifications'
+
   #Profile routes
   get 'profile', to: 'people#show'
   get 'profile/edit', to: 'people#edit'
