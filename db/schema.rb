@@ -33,6 +33,21 @@ ActiveRecord::Schema.define(version: 2018_11_06_213039) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "category"
+    t.string "status"
+    t.string "owner"
+    t.string "current_holder"
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_items_on_person_id"
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "fname"
     t.string "lname"
