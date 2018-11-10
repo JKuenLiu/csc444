@@ -16,10 +16,21 @@
 
 @import 'bootstrap';
 
-#header {
-    display:block;
-    width:100%;
-    height:70px;
-    background-color:#475;
-    overflow:scroll;
+
+// ------------ header background color ----------- //
+.bg-blue {
+  background-color: #5E9BD1 !important;
+}
+
+a.bg-blue:hover, a.bg-blue:focus,
+button.bg-dark:hover,
+button.bg-dark:focus {
+  background-color: #1d2124 !important;
+}
+
+// ------------ menu button ----------- //
+
+.menu-button-container img {
+    height: 15px; 
+    width: auto;
 }
