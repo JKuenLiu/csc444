@@ -29,6 +29,8 @@ class HomepageController < ApplicationController
         @transaction = Transaction.new(transaction_params)
         if @transaction.save
             puts 'Success'
+            person = transaction_params[:person_id]
+            Item.where(transaction_params[:item_id]).update(current_holder: person)
         else
             puts 'Error'
         end
