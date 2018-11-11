@@ -59,6 +59,22 @@ class ItemsController < ApplicationController
         redirect_to @item
     end
 
+    def return_item
+      @person = Person.find_by_user_id(current_user.id)
+      @item = Item.find(params[:id])
+      # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
+      transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :returned}
+      @transaction = Transaction.new(transaction_params)
+
+      if @transaction.save
+        puts 'Success'
+      else
+        puts 'Error'
+      end
+
+      redirect_to @item
+    end
+
     private
     def item_params
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category)
