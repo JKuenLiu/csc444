@@ -10,13 +10,7 @@ class ItemsController < ApplicationController
         end
     end
     def update
-        find_item
-        if validate_dates
-            request_item
-        else
-            #verify_transaction
-            redirect_to @item
-        end
+        request_item
     end
 
     def edit
@@ -88,29 +82,6 @@ class ItemsController < ApplicationController
     ##############PRIVATE FUNCTIONS###############
     ##############################################
     private
-    def find_item
-        @person = Person.find_by_user_id(current_user.id)
-        @item = Item.find(params[:id])
-    end
-
-    def validate_dates
-        start_date = params[:item][:start_date]
-        end_date = params[:item][:end_date]
-        if !start_date.blank? && !end_date.blank?
-            @item.update(start_date: start_date)
-            @item.update(end_date: end_date)
-            return @item.save
-        end
-        if start_date.blank?
-            @item.errors[:start_date] << "has no date"
-        end
-        if end_date.blank?
-            @item.errors[:end_date] << "has no date"
-        end
-        #puts "--------------failed date"
-        return false
-    end
-
     def verify_transaction
         @valid_transaction = true
         if @person.items.include?(@item)

@@ -8,8 +8,7 @@ class Item < ApplicationRecord
     #validates :start_date,:presence => true
     #validates :end_date, :presence => true
     validate :start_date_cannot_be_in_the_past,
-             :start_date_cannot_be_later_than_end_date,
-             :start_date_must_have_end_date
+             :start_date_cannot_be_later_than_end_date
 
 
     def start_date_cannot_be_in_the_past
@@ -20,13 +19,7 @@ class Item < ApplicationRecord
 
     def start_date_cannot_be_later_than_end_date
         if start_date and end_date and start_date > end_date
-            errors.add(:start_date, "can't be after end date");
-        end
-    end
-
-    def start_date_must_have_end_date
-        if start_date and end_date.blank?
-            errors.add(:start_date, "must have an end date");
+            errors.add(:start_date, "can't be past end date");
         end
     end
 end
