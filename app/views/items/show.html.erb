@@ -3,15 +3,22 @@
 <h3>Description</h3>
 <p><%= @item.description %></p>
 
-<h3>Start Date</h3>
-<p><%= @item.start_date %></p>
-
-<h3>End Date</h3>
-<p><%= @item.end_date %></p>
-
 <h3>Category</h3>
 <p><%= @item.category %></p>
 
+<%= form_with model: @item, local: true do |form| %>
+    <% if @person && @item[:person_id] != @person.id %>
+      <p>
+        <%= form.label :start_date %><br>
+        <%= form.date_field :start_date%>
+      </p>
+
+      <p>
+        <%= form.label :end_date %><br>
+        <%= form.date_field :end_date%>
+      </p>
+    <% end %>
+<% end %>
 
 <% if @person.items.include?(@item) %>
 	<%= button_to 'Request this Item', {}, disabled: true %>
