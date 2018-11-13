@@ -10,15 +10,20 @@ class ItemsController < ApplicationController
         end
     end
     def update
-        request_item
+        find_item
+        if validate_dates
+            request_item
+        else
+            #verify_transaction
+            redirect_to @item
+        end
     end
 
     def edit
     end
 
     def show
-        @person = Person.find_by_user_id(current_user.id)
-        @item = Item.find(params[:id])
+        find_item
         verify_transaction
     end
 
@@ -37,8 +42,7 @@ class ItemsController < ApplicationController
     end
 
     def destroy
-        @person = Person.find_by_user_id(current_user.id)
-        @item = @person.items.find(params[:id])
+        find_item
 
         # destroy transactions related to this item
         @transactions = Transaction.where(id: @items.map(&:id))
@@ -49,8 +53,7 @@ class ItemsController < ApplicationController
     end
 
     def request_item
-        @person = Person.find_by_user_id(current_user.id)
-        @item = Item.find(params[:id])
+        find_item
         transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
         @transaction = Transaction.new(transaction_params)
         if @transaction.save
@@ -62,8 +65,7 @@ class ItemsController < ApplicationController
     end
 
     def return_item
-      @person = Person.find_by_user_id(current_user.id)
-      @item = Item.find(params[:id])
+      find_item
       # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
       transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :returned}
       @transaction = Transaction.new(transaction_params)
@@ -82,6 +84,31 @@ class ItemsController < ApplicationController
     ##############PRIVATE FUNCTIONS###############
     ##############################################
     private
+
+    def find_item
+        @person = Person.find_by_user_id(current_user.id)
+        @item = Item.find(params[:id])
+    end
+
+    def validate_dates
+        start_date = params[:item][:start_date]
+        end_date = params[:item][:end_date]
+        if !start_date.blank? && !end_date.blank?
+            @item.update(start_date: start_date)
+            @item.update(end_date: end_date)
+        return @item.save
+        end
+        if start_date.blank?
+            @item.errors[:start_date] << "has no date"
+        end
+        if end_date.blank?
+            @item.errors[:end_date] << "has no date"
+        end
+        #puts "--------------failed date"
+        return false
+    end
+
+
     def verify_transaction
         @valid_transaction = true
         if @person.items.include?(@item)
