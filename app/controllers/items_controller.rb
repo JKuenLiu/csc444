@@ -18,6 +18,7 @@ class ItemsController < ApplicationController
     def show
         @person = Person.find_by_user_id(current_user.id)
         @item = Item.find(params[:id])
+        verify_transaction
     end
 
     def new
@@ -76,6 +77,37 @@ class ItemsController < ApplicationController
     end
 
     private
+
+    def verify_transaction
+        @valid_transaction = true
+        if @person.items.include?(@item)
+        	@valid_transaction = false
+        else
+        	transaction_with_item = Transaction.where(item_id: @item.id).order("date")
+        	if transaction_with_item.count > 0
+        		#check if you have already requested this item
+        		transaction_with_item_returned = transaction_with_item.where(status: :returned)
+        		if transaction_with_item_returned.count > 0
+        			last_returned_date = transaction_with_item_returned.last.date
+        			transactions_after_last_returned_date = transaction_with_item.where("date > ?", last_returned_date)
+        			if transactions_after_last_returned_date.where(person_id: @person.id, status: :requested).count > 0
+        				@valid_transaction = false
+        			else
+        				@valid_transaction = true
+        			end
+        		else
+        			if transaction_with_item.where(person_id: @person.id, status: :requested).count > 0
+        				@valid_transaction = false
+        			else
+        				@valid_transaction = true
+        			end
+        		end
+        	else
+        		@valid_transaction = true
+        	end
+        end
+    end
+
     def item_params
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category)
     end
