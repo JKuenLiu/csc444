@@ -12,6 +12,19 @@
 <h3>Category</h3>
 <p><%= @item.category %></p>
 
+<h3>Photos</h3>
+<p>
+  <% if !@item.photos.empty? %>
+      <% @item.photos.each do |photo| %>
+        <div style="width:400px; height:auto">
+            <%= image_tag(photo, style:'width:100%')%>
+        </div>
+      <% end %>
+  <% else %>
+    <p>No Photos!</p>
+  <% end %>
+</p>
+
 <% if @valid_transaction %>
     <%= form_with model: @item, local: true do |form| %>
         <p>
