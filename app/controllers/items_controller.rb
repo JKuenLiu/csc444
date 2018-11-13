@@ -10,6 +10,7 @@ class ItemsController < ApplicationController
         end
     end
     def update
+        request_item
     end
 
     def edit
@@ -76,8 +77,11 @@ class ItemsController < ApplicationController
       redirect_to @item
     end
 
-    private
 
+    ##############################################
+    ##############PRIVATE FUNCTIONS###############
+    ##############################################
+    private
     def verify_transaction
         @valid_transaction = true
         if @person.items.include?(@item)

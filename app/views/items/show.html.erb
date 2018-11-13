@@ -12,11 +12,22 @@
 <h3>Category</h3>
 <p><%= @item.category %></p>
 
-
 <% if @valid_transaction %>
-	<%= button_to 'Request this Item', {controller: :items, action: 'request_item', id: @item.id}, method: :post %>
-<% else %>
-    <%= button_to 'Request this Item', {}, disabled: true %>
+    <%= form_with model: @item, local: true do |form| %>
+        <p>
+          <%= form.label :start_date %><br>
+          <%= form.date_field :start_date%>
+        </p>
+
+        <p>
+          <%= form.label :end_date %><br>
+          <%= form.date_field :end_date%>
+        </p>
+
+        <p>
+          <%= form.submit "Request Item" %>
+        </p>
+    <% end %>
 <% end %>
 
 
