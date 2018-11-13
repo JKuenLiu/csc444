@@ -49,13 +49,6 @@ class ItemsController < ApplicationController
     def request_item
         @person = Person.find_by_user_id(current_user.id)
         @item = Item.find(params[:id])
-
-        #user must be assign a start date and end date before a request
-        if !check_dates
-            redirect_to @item
-            return
-        end
-        #request successful, continue transaction
         transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
         @transaction = Transaction.new(transaction_params)
         if @transaction.save
@@ -83,20 +76,7 @@ class ItemsController < ApplicationController
     end
 
     private
-
     def item_params
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category)
-    end
-
-    def check_dates
-        start_date = params[:start_date]
-        end_date   = params[:end_date]
-        @item.start_date = start_date
-        @item.end_date   = end_date
-        if start_date != nil && end_date != nil
-            @item.save
-        else
-            false
-        end
     end
 end

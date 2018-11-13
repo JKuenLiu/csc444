@@ -5,12 +5,10 @@ class Item < ApplicationRecord
 
     validates :name, :presence => true
 
-    #validates :start_date,:presence => true
-    #validates :end_date, :presence => true
+    validates :start_date,:presence => true
+    validates :end_date, :presence => true
     validate :start_date_cannot_be_in_the_past,
              :start_date_cannot_be_later_than_end_date
-    #validates_format_of :start_date, :with => /\d{2}\/\d{2}\/\d{4}/, :message => "Start date must be added."
-    #validates_format_of :end_date, :with => /\d{2}\/\d{2}\/\d{4}/, :message => "End date must be added."
 
 
     def start_date_cannot_be_in_the_past

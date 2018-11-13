@@ -30,7 +30,7 @@ class HomepageController < ApplicationController
         if @transaction.save
             puts 'Success'
             @item_update = Item.where(id: transaction_params[:item_id]).update(current_holder: transaction_params[:person_id])
-
+          
         else
             puts 'Error'
         end
