@@ -7,8 +7,10 @@ class HomepageController < ApplicationController
                  else
                      Item.all
                  end
-        @items_due_within_time_period = count_items_due_within_time_period
-        @items_due_within_time_period_string = @items_due_within_time_period.to_s
+        if user_signed_in?
+            @items_due_within_time_period = count_items_due_within_time_period
+            @items_due_within_time_period_string = @items_due_within_time_period.to_s
+        end
     end
 
     def history
