@@ -7,6 +7,10 @@ class HomepageController < ApplicationController
                  else
                      Item.all
                  end
+        if user_signed_in?
+            @items_due_within_time_period = count_items_due_within_time_period
+            @items_due_within_time_period_string = @items_due_within_time_period.to_s
+        end
     end
 
     def history
@@ -36,6 +40,20 @@ class HomepageController < ApplicationController
         end
 
         redirect_to homepage_notifications_path
+    end
+
+    def count_items_due_within_time_period
+        @person = Person.find_by_user_id(current_user.id)
+        @user_items = Item.where(current_holder: @person.id)
+        @time_period = 3.days
+        @overdue_items = @user_items.where("end_date > ?", Date.today + @time_period)
+        # <% if @items_due_within_time_period > 0 %>
+        #   <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %> |
+        # <% else %>
+        #   <%= link_to 'Notifications',  homepage_notifications_path %> |
+        # <% end %>
+        
+        return @overdue_items.count
     end
 
     private

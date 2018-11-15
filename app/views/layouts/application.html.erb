@@ -21,49 +21,61 @@
     <!-- header start -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue sticky-top">
 
-      <div class="menu-button-container">
+      <div class="menu-button-container" onclick="openNav()">
         <%= image_tag("menu_button.png", :alt => "Menu") %>
       </div>
 
-      <a class="navbar-brand" href="#">LNDR</a>
-
-      <!-- search bar start -->
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      <!-- search bar end -->
+      <%= link_to 'LNDR', homepage_index_path %>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-        </ul>
+      </div>
+
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <div class="notifications-button-container">
+          <%= image_tag("notifications_button.png", :alt => "Notifications") %>
       </div>
     </nav>
+
+
+    <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <ul class="nav flex-column">
+      <li class="nav-item">
+        <%= link_to 'Your profile', profile_path, :class => 'navbar-link' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Edit Login Settings', edit_user_registration_path %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Your Items", items_path(:your_items => 'true') %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Borrowed Items", items_path(:your_items => 'false') %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'History',  homepage_history_path %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Notifications',  homepage_notifications_path %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
+      </li>
+    </ul>
+  </div>
+
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+    <div id="main">
+      <%= yield %>
+    </div>
     <!-- header end -->
-    <%= yield %>
   </body>
 </html>
