@@ -38,6 +38,8 @@ class ItemsController < ApplicationController
     def create
         @person = Person.find_by_user_id(current_user.id)
         @item = @person.items.create(item_params)
+        puts params[:tags]
+        populateTagLinks
         if @item.errors.any?
             render 'new'
         else
@@ -180,4 +182,15 @@ class ItemsController < ApplicationController
     def item_params
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category, photos: [])
     end
+
+  def populateTagLinks
+      tagsList = params[:tags].split(",").map(&:strip) #split by commas and remove whitespaces
+      tagsList.each do |item|
+          curTag = Tag.find_by_name(item)
+          if curTag == nil
+              curTag = Tag.create(name: item)
+          end
+          @item.tags << curTag
+      end
+  end
 end

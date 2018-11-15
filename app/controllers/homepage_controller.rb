@@ -1,12 +1,13 @@
 class HomepageController < ApplicationController
     skip_before_action :require_login
     def index
-        #@item = Item.new
-        @all_items = if params[:term]
-                     Item.where('name LIKE ?', "%#{params[:term]}%")
-                 else
-                     Item.all
-                 end
+        @all_items = Array.new
+         if params[:term]
+             @all_items = Item.where('name LIKE ?', "%#{params[:term]}%")
+             Tag.where('name LIKE ?', "%#{params[:term]}%").each{|tag| @all_items += tag.items}
+         else
+             @all_items = Item.all
+         end
         if user_signed_in?
             @items_due_within_time_period = count_items_due_within_time_period
             @items_due_within_time_period_string = @items_due_within_time_period.to_s

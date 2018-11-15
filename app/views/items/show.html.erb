@@ -20,6 +20,9 @@
 <h3>Category</h3>
 <p><%= @item.category %></p>
 
+<h3>Tags</h3>
+<p><%= @item.tags.map{|item| item.name}.join(", ") %></p>
+
 <h3>Photos</h3>
 <p>
   <% if !@item.photos.empty? %>
