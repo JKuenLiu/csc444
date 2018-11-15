@@ -28,9 +28,7 @@ class ItemsController < ApplicationController
     def show
         find_item_and_person
         @valid_transaction = verify_transaction
-        if @valid_transaction
-            @transaction = Transaction.new
-        end
+        @transaction = Transaction.new
     end
 
     def new
@@ -64,11 +62,6 @@ class ItemsController < ApplicationController
         start_date = params[:item][:start_date]
         end_date = params[:item][:end_date]
         #TODO: error message when it fails
-        if start_date.blank? || end_date.blank?
-            puts "------------start_date or end_date is blank"
-            redirect_to @item
-            return
-        end
         transaction_params = {:person_id => @person.id, :item_id => params[:id],
                               :date => DateTime.now, :status => :requested,
                               :start_date => start_date, :end_date => end_date}
@@ -78,6 +71,9 @@ class ItemsController < ApplicationController
             puts '------------Successful Request!'
         else
             puts '------------Request failed!'
+            @valid_transaction = verify_transaction
+            render "show"
+            return
         end
         redirect_to @item
     end
