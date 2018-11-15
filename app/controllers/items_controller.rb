@@ -49,7 +49,7 @@ class ItemsController < ApplicationController
         find_item_and_person
 
         # destroy transactions related to this item
-        @transactions = Transaction.where(id: @items.map(&:id))
+        @transactions = Transaction.where(id: @item.id)
         @transactions.destroy_all
 
         @item.destroy
