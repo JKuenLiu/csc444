@@ -166,34 +166,12 @@ class ItemsController < ApplicationController
                 #something is fucked if this happens
                 else
                     puts "something is fucked!"
-                    alert
+                    #alert
                 end
             else
                 puts "-----no valid transactions"
                 @valid_transaction = true
             end
-        	# transaction_with_item = Transaction.where(item_id: @item.id).order("date")
-        	# if transaction_with_item.count > 0
-        	# 	#check if you have already requested this item
-        	# 	transaction_with_item_returned = transaction_with_item.where(status: :returned)
-        	# 	if transaction_with_item_returned.count > 0
-        	# 		last_returned_date = transaction_with_item_returned.last.date
-        	# 		transactions_after_last_returned_date = transaction_with_item.where("date > ?", last_returned_date)
-        	# 		if transactions_after_last_returned_date.where(person_id: @person.id, status: :requested).count > 0
-        	# 			@valid_transaction = false
-        	# 		else
-        	# 			@valid_transaction = true
-        	# 		end
-        	# 	else
-        	# 		if transaction_with_item.where(person_id: @person.id, status: :requested).count > 0
-        	# 			@valid_transaction = false
-        	# 		else
-        	# 			@valid_transaction = true
-        	# 		end
-        	# 	end
-        	# else
-        	# 	@valid_transaction = true
-        	# end
         end
     end
 
