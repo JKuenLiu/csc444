@@ -18,21 +18,19 @@ class ItemsController < ApplicationController
   end
 
     def update
-        find_item
-        if validate_dates
-            request_item
-        else
-            #verify_transaction
-            redirect_to @item
-        end
+        find_item_and_person
+        request_item
     end
 
     def edit
     end
 
     def show
-        find_item
-        verify_transaction
+        find_item_and_person
+        @valid_transaction = verify_transaction
+        if @valid_transaction
+            @transaction = Transaction.new
+        end
     end
 
     def new
@@ -50,7 +48,7 @@ class ItemsController < ApplicationController
     end
 
     def destroy
-        find_item
+        find_item_and_person
 
         # destroy transactions related to this item
         @transactions = Transaction.where(id: @items.map(&:id))
@@ -61,29 +59,45 @@ class ItemsController < ApplicationController
     end
 
     def request_item
-        find_item
-        transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :requested}
+        puts "-----------Requesting Item"
+        find_item_and_person
+        start_date = params[:item][:start_date]
+        end_date = params[:item][:end_date]
+        #TODO: error message when it fails
+        if start_date.blank? || end_date.blank?
+            puts "------------start_date or end_date is blank"
+            redirect_to @item
+            return
+        end
+        transaction_params = {:person_id => @person.id, :item_id => params[:id],
+                              :date => DateTime.now, :status => :requested,
+                              :start_date => start_date, :end_date => end_date}
         @transaction = Transaction.new(transaction_params)
         if @transaction.save
             #puts '-----Success', @transaction.person_id, @transaction.item_id, @transaction.status
-            puts 'Successful Request!'
+            puts '------------Successful Request!'
         else
-            puts 'Request failed!'
+            puts '------------Request failed!'
         end
         redirect_to @item
     end
 
     def return_item
-      find_item
+      find_item_and_person
       # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
-      transaction_params = {:person_id => params[:person_id], :item_id => params[:id], :date => DateTime.now, :status => :returned}
+      approved_transaction = find_most_recent_approved_transaction
+      start_date = approved_transaction.start_date
+      end_date = approved_transaction.end_date
+      transaction_params = {:person_id => @person.id, :item_id => params[:id],
+                            :date => DateTime.now, :status => :returned,
+                            :start_date => start_date, :end_date => end_date}
       @transaction = Transaction.new(transaction_params)
 
       if @transaction.save
-        puts 'Success'
-        @item.update(current_holder: @item.owner)
+        puts '------------Successful return'
+        @item.update(current_holder: "")
       else
-        puts 'Error'
+        puts '------------Return failed'
       end
 
       redirect_to @item
@@ -95,33 +109,17 @@ class ItemsController < ApplicationController
     ##############################################
     private
 
-    def find_item
+
+    def find_item_and_person
         @person = Person.find_by_user_id(current_user.id)
         @item = Item.find(params[:id])
     end
 
-    def validate_dates
-        start_date = params[:item][:start_date]
-        end_date = params[:item][:end_date]
-        if !start_date.blank? && !end_date.blank?
-            @item.update(start_date: start_date)
-            @item.update(end_date: end_date)
-        return @item.save
-        end
-        if start_date.blank?
-            @item.errors[:start_date] << "has no date"
-        end
-        if end_date.blank?
-            @item.errors[:end_date] << "has no date"
-        end
-        #puts "--------------failed date"
-        return false
-    end
-
-    def get_cur_item
+    def find_most_recent_approved_transaction
         transaction_with_item = Transaction.where(item_id: @item.id).order("date")
-        last_transation_of_item = transaction_with_item.last.date
-        return last_transation_of_item
+        transaction_with_item_approved = transaction_with_item.where(status: :approved)
+        last_approved_transaction = transaction_with_item_approved.last
+        return last_approved_transaction
     end
 
     def find_most_recent_return
@@ -144,10 +142,9 @@ class ItemsController < ApplicationController
     end
 
     def verify_transaction
-        @valid_transaction = true
         #if it is the owner, she/he cannot request the item
         if @person.items.include?(@item)
-        	@valid_transaction = false
+        	return false
         else
             #in this case you are a borrower requesting an item
             transaction_with_item = Transaction.where(item_id: @item.id).order("date")
@@ -156,11 +153,11 @@ class ItemsController < ApplicationController
                 #if the item is returned, anyone can borrow the item again
                 if cur_item.returned?
                     puts "-----------item is returned"
-                    @valid_transaction = true
+                    return true
                 #no one can request an item once it has been borrowed
                 elsif cur_item.approved?
                     puts "-----------item was approved"
-                    @valid_transaction = false
+                    return false
                 #if the item is currently being requested, then you are only allowed
                 #one request per time the item is out
                 elsif cur_item.requested?
@@ -168,9 +165,9 @@ class ItemsController < ApplicationController
                     last_returned_date = find_most_recent_return
                     if last_returned_date != nil
                         transactions_after_last_returned_date = transaction_with_item.where("date > ?", last_returned_date)
-                        @valid_transaction = is_a_double_request(transactions_after_last_returned_date)
+                        return is_a_double_request(transactions_after_last_returned_date)
                     else
-                        @valid_transaction = is_a_double_request(transaction_with_item)
+                        return is_a_double_request(transaction_with_item)
                     end
                 #something is fucked if this happens
                 else
@@ -179,7 +176,7 @@ class ItemsController < ApplicationController
                 end
             else
                 puts "-----no valid transactions"
-                @valid_transaction = true
+                return true
             end
         end
     end

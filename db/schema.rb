@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_232402) do
+ActiveRecord::Schema.define(version: 2018_11_15_161238) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -36,8 +36,6 @@ ActiveRecord::Schema.define(version: 2018_11_08_232402) do
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.date "start_date"
-    t.date "end_date"
     t.string "category"
     t.string "status"
     t.string "owner"
@@ -86,6 +84,8 @@ ActiveRecord::Schema.define(version: 2018_11_08_232402) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "start_date"
+    t.date "end_date"
     t.index ["item_id"], name: "index_transactions_on_item_id"
     t.index ["person_id"], name: "index_transactions_on_person_id"
   end
