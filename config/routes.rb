@@ -15,8 +15,10 @@ Rails.application.routes.draw do
   #get 'item/update', to: 'item#update'
   #get 'item/edit', to: 'item#edit'
 
+  #TODO: Define the routes to create transactions hierarchically under an item; each transaction .only has one item
   resources :items
   post 'items/request_item'
+  post 'items/return_item'
 
   root 'homepage#index'
   devise_for :users, controllers: {registrations: 'users/registrations',sessions: 'users/sessions'}

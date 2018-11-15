@@ -2,13 +2,21 @@ class ItemsController < ApplicationController
 	def index
         @person = Person.find_by_user_id(current_user.id)
         @show_your_items = params[:your_items]
+        @transactions = nil
+
         if @show_your_items == 'true'
             @user_items = @person.items
+
         else
-            user_id = current_user.id
             @user_items = Item.where(current_holder: @person.id)
+
+            # For all of current users borrowed items, get the most recent transaction that occurred
+            # (should be the 'Approved' transaction)
+            @transactions = Transaction.where(person_id: @person.id, item_id: @user_items.map(&:id))
+                                        .order("created_at DESC")
         end
-    end
+  end
+
     def update
         find_item
         if validate_dates
@@ -68,11 +76,12 @@ class ItemsController < ApplicationController
     def return_item
       find_item
       # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
-      transaction_params = {:person_id => @person.id, :item_id => params[:id], :date => DateTime.now, :status => :returned}
+      transaction_params = {:person_id => params[:person_id], :item_id => params[:id], :date => DateTime.now, :status => :returned}
       @transaction = Transaction.new(transaction_params)
 
       if @transaction.save
         puts 'Success'
+        @item.update(current_holder: @item.owner)
       else
         puts 'Error'
       end

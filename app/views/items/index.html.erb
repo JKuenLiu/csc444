@@ -1,3 +1,6 @@
+<%# Idea: maybe have the index page with no url params, and just display both your items and borrowed items
+    simultaneously %>
+
 <% if @show_your_items == 'true' %>
     <h1> Your Items: </h1>
 <% else %>
@@ -6,9 +9,15 @@
 
 <table>
     <% if @user_items %>
-        <% @user_items.each do |item| %>
+        <% @user_items.each_with_index do |item, index| %>
             <tr>
-                <td><%= link_to item.name, item_path(item) %></td>
+
+              <td><%= link_to item.name, item_path(item) %></td>
+                <% if @show_your_items == 'false' and !@transactions.nil? %>
+
+                    <td><%= link_to_if (@transactions[index].approved?), 'Return Item', items_return_item_path(person_id: @transactions[index].person_id, id: @transactions[index].item_id), method: :post %></td>
+
+                <% end %>
             </tr>
         <% end %>
     <% end %>
