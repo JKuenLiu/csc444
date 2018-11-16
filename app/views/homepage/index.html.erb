@@ -1,13 +1,6 @@
 <p class="navbar-text pull-right">
     <% if user_signed_in? %>
       Logged in as <strong> <%= current_user.email %></strong>.
-      <%= link_to 'View profile', profile_path, :class => 'navbar-link' %> |
-      <%= link_to 'Edit Login Settings', edit_user_registration_path %> |
-      <%= link_to 'Your Items', :controller => :items, :action => :index, :your_items => 'true' %> |
-      <%= link_to 'Borrowed Items', :controller => :items, :action => :index, :your_items => 'false' %> |
-      <%= link_to 'History',  homepage_history_path %> |
-      <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %> |
-      <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
     <% else %>
       <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
       <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>

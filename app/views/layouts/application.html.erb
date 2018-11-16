@@ -64,7 +64,7 @@
         <%= link_to 'History',  homepage_history_path %>
       </li>
       <li class="nav-item">
-        <%= link_to 'Notifications',  homepage_notifications_path %>
+        <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %>
       </li>
       <li class="nav-item">
         <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
