@@ -15,7 +15,7 @@ class ItemsController < ApplicationController
             @transactions = Transaction.where(person_id: @person.id, item_id: @user_items.map(&:id))
                                         .order("created_at DESC")
         end
-  end
+    end
 
     def update
         find_item_and_person
@@ -23,6 +23,7 @@ class ItemsController < ApplicationController
     end
 
     def edit
+        find_item_and_person
     end
 
     def show

@@ -60,6 +60,7 @@
 <%= link_to 'Back', homepage_index_path %>
 
 <% if @person.items.include?(@item) %>
+  <%= link_to 'Edit Item', edit_item_path(@item) %>
 	<%= link_to 'Remove Item', [@item],
                method: :delete,
                data: { confirm: 'Are you sure?' } %>
