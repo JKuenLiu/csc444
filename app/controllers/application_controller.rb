@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-	before_action :require_login
+	before_action :require_login, :num_of_notifications
 
 	private
 	def require_login
@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
 				@items_due_within_time_period_string = @items_due_within_time_period.to_s
 			end
 		end
+	end
+
+	def num_of_notifications
+		if user_signed_in?
+			@items_due_within_time_period = count_items_due_within_time_period
+			@items_due_within_time_period_string = @items_due_within_time_period.to_s
+		end
+
 	end
 
 	def count_items_due_within_time_period
