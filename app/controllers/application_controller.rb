@@ -5,10 +5,6 @@ class ApplicationController < ActionController::Base
 	def require_login
 		unless current_user
 			redirect_to new_user_session_path
-			if user_signed_in?
-				@items_due_within_time_period = count_items_due_within_time_period
-				@items_due_within_time_period_string = @items_due_within_time_period.to_s
-			end
 		end
 	end
 
@@ -16,8 +12,9 @@ class ApplicationController < ActionController::Base
 		if user_signed_in?
 			@items_due_within_time_period = count_items_due_within_time_period
 			@items_due_within_time_period_string = @items_due_within_time_period.to_s
+		else
+			@items_due_within_time_period_string = nil
 		end
-
 	end
 
 	def count_items_due_within_time_period

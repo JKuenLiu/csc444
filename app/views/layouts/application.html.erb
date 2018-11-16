@@ -21,9 +21,11 @@
     <!-- header start -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue sticky-top">
 
-      <div class="menu-button-container" onclick="openNav()">
-        <%= image_tag("menu_button.png", :alt => "Menu") %>
-      </div>
+      <% if user_signed_in? %>
+        <div class="menu-button-container" onclick="openNav()">
+          <%= image_tag("menu_button.png", :alt => "Menu") %>
+        </div>
+      <% end %>
 
       <%= link_to 'LNDR', homepage_index_path %>
 
@@ -64,7 +66,11 @@
         <%= link_to 'History',  homepage_history_path %>
       </li>
       <li class="nav-item">
-        <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %>
+        <% if @items_due_within_time_period_string %>
+          <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %>
+        <% else %>
+          <%= link_to 'Notifications',  homepage_notifications_path %>
+        <% end %>
       </li>
       <li class="nav-item">
         <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
