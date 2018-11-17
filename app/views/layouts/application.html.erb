@@ -19,69 +19,49 @@
     <% end %>
 
     <!-- header start -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue sticky-top">
-
-      <% if user_signed_in? %>
-        <div class="menu-button-container" onclick="openNav()">
-          <%= image_tag("menu_button.png", :alt => "Menu") %>
-        </div>
-      <% end %>
-
-      <%= link_to 'LNDR', homepage_index_path %>
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue stick-top">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <a class="navbar-brand" href="#">LNDR</a>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      </div>
-
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-
-      <div class="notifications-button-container">
-          <%= image_tag("notifications_button.png", :alt => "Notifications") %>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <%= link_to 'Profile  ', profile_path, :class => 'navbar-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Edit Login Settings  ', edit_user_registration_path, :class => 'navbar-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Your Items  ", items_path(:your_items => 'true'), :class => 'navbar-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Borrowed Items  ", items_path(:your_items => 'false'), :class => 'navbar-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'History  ', homepage_history_path, :class => 'navbar-link' %>
+          </li>
+          <li class="nav-item">
+            <% if @items_due_within_time_period_string %>
+              <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')  ',  homepage_notifications_path, :class => 'navbar-link' %>
+            <% else %>
+              <%= link_to 'Notifications  ',  homepage_notifications_path, :class => 'navbar-link' %>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </div>
     </nav>
-
-
-    <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <ul class="nav flex-column">
-      <li class="nav-item">
-        <%= link_to 'Your profile', profile_path, :class => 'navbar-link' %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'Edit Login Settings', edit_user_registration_path %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Your Items", items_path(:your_items => 'true') %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Borrowed Items", items_path(:your_items => 'false') %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'History',  homepage_history_path %>
-      </li>
-      <li class="nav-item">
-        <% if @items_due_within_time_period_string %>
-          <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %>
-        <% else %>
-          <%= link_to 'Notifications',  homepage_notifications_path %>
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'navbar-link' %>
-      </li>
-    </ul>
-  </div>
-
-    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-    <div id="main">
-      <%= yield %>
-    </div>
     <!-- header end -->
+
+    <%= yield %>
+    
   </body>
 </html>
