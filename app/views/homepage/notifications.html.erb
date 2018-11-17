@@ -1,22 +1,22 @@
 <h1>Notifications</h1>
 
 <table>
-    <% if @transactions %>
-        <% @transactions.each do |transaction| %>
-        	<% transaction_person = Person.find(transaction.person_id) %>
-        	<% transaction_item = Item.find(transaction.item_id) %>
+    <% if @interactions %>
+        <% @interactions.each do |interaction| %>
+        	<% interaction_person = Person.find(interaction.person_id) %>
+        	<% interaction_item = Item.find(interaction.item_id) %>
             <tr>
-            	<% if transaction.requested? %>
-            		<td><%= transaction_person.fname %>
-                        <%= transaction_person.lname %> has requested to borrow your item <%= transaction_item.name %></td>
-            		<% last_transation_of_item = @transactions.where(item_id: transaction.item_id).first %>
+            	<% if interaction.requested? %>
+            		<td><%= interaction_person.fname %>
+                        <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %></td>
+            		<% last_transation_of_item = @interactions.where(item_id: interaction.item_id).first %>
             		<td> <%= link_to_if !last_transation_of_item.approved?,
                              'Approve',
                              homepage_approve_request_path(
-                             person_id: transaction.person_id,
-                             item_id: transaction.item_id,
-                             start_date: transaction.start_date,
-                             end_date: transaction.end_date),
+                             person_id: interaction.person_id,
+                             item_id: interaction.item_id,
+                             start_date: interaction.start_date,
+                             end_date: interaction.end_date),
                              method: :post %> </td>
             	<% end %>
             </tr>

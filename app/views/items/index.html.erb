@@ -13,9 +13,9 @@
             <tr>
 
               <td><%= link_to item.name, item_path(item) %></td>
-                <% if @show_your_items == 'false' and !@transactions.nil? %>
+                <% if @show_your_items == 'false' and !@interactions.nil? %>
 
-                    <td><%= link_to_if (@transactions[index].approved?), 'Return Item', items_return_item_path(person_id: @transactions[index].person_id, id: @transactions[index].item_id), method: :post %></td>
+                    <td><%= link_to_if (@interactions[index].approved?), 'Return Item', items_return_item_path(person_id: @interactions[index].person_id, id: @interactions[index].item_id), method: :post %></td>
 
                 <% end %>
             </tr>

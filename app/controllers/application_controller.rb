@@ -24,21 +24,21 @@ class ApplicationController < ActionController::Base
 	    user_items = Item.where(current_holder: @person.id)
 	    time_period = 3.days
 	    puts "-------item ids:", user_items.ids
-	    approved_item_transactions = []
+	    approved_item_interactions = []
 	    user_items.each do |i|
-	        #the most recent transaction status of the current holder has to be
+	        #the most recent interaction status of the current holder has to be
 	        #"approved"
-	        last_transaction = Transaction.where(item_id: i.id).order("date").last
-	        approved_item_transactions.push(last_transaction)
+	        last_interaction = Interaction.where(item_id: i.id).order("date").last
+	        approved_item_interactions.push(last_interaction)
 	    end
-	    if approved_item_transactions.count < 1
+	    if approved_item_interactions.count < 1
 	        puts "-----no overdue items:"
 	        return 0
 	    end
 	    puts "-----potentially overdue item"
 	    overdue_items = 0
-	    approved_item_transactions.each do |transaction|
-	        if transaction.end_date > Date.today + time_period
+	    approved_item_interactions.each do |interaction|
+	        if interaction.end_date > Date.today + time_period
 	            overdue_items += 1
 	        end
 	    end

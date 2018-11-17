@@ -13,29 +13,29 @@ class HomepageController < ApplicationController
     def history
         @person = Person.find_by_user_id(current_user.id)
         @items = @person.items
-        @transactions = Transaction.where(item_id: @items.map(&:id)).order(date: :desc)
+        @interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
     end
 
 
     def notifications
         @person = Person.find_by_user_id(current_user.id)
         @items = @person.items
-        @transactions = Transaction.where(item_id: @items.map(&:id)).order(date: :desc)
+        @interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
     end
 
     def approve_request
         puts "---------approve_request-----------"
-        transaction_params = {:person_id => params[:person_id],
+        interaction_params = {:person_id => params[:person_id],
                               :item_id => params[:item_id],
                               :date => DateTime.now, :status => :approved,
                               :start_date => params[:start_date],
                               :end_date => params[:end_date]}
-        puts transaction_params
-        @transaction = Transaction.new(transaction_params)
-        if @transaction.save
+        puts interaction_params
+        @interaction = Interaction.new(interaction_params)
+        if @interaction.save
             puts '-----------Approval Success'
-            @item_update = Item.where(id: transaction_params[:item_id])
-            @item_update.update(current_holder: transaction_params[:person_id])
+            @item_update = Item.where(id: interaction_params[:item_id])
+            @item_update.update(current_holder: interaction_params[:person_id])
         else
             puts '-----------Approval Failure'
         end

@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
 	def index
         @person = Person.find_by_user_id(current_user.id)
         @show_your_items = params[:your_items]
-        @transactions = nil
+        @interactions = nil
 
         if @show_your_items == 'true'
             @user_items = @person.items
@@ -10,9 +10,9 @@ class ItemsController < ApplicationController
         else
             @user_items = Item.where(current_holder: @person.id)
 
-            # For all of current users borrowed items, get the most recent transaction that occurred
-            # (should be the 'Approved' transaction)
-            @transactions = Transaction.where(person_id: @person.id, item_id: @user_items.map(&:id))
+            # For all of current users borrowed items, get the most recent interaction that occurred
+            # (should be the 'Approved' interaction)
+            @interactions = Interaction.where(person_id: @person.id, item_id: @user_items.map(&:id))
                                         .order("created_at DESC")
         end
     end
@@ -28,8 +28,8 @@ class ItemsController < ApplicationController
 
     def show
         find_item_and_person
-        @valid_transaction = verify_transaction
-        @transaction = Transaction.new
+        @valid_interaction = verify_interaction
+        @interaction = Interaction.new
     end
 
     def new
@@ -51,9 +51,9 @@ class ItemsController < ApplicationController
     def destroy
         find_item_and_person
 
-        # destroy transactions related to this item
-        @transactions = Transaction.where(id: @item.id)
-        @transactions.destroy_all
+        # destroy interactions related to this item
+        @interactions = Interaction.where(id: @item.id)
+        @interactions.destroy_all
 
         @item.destroy
         redirect_to items_path
@@ -65,16 +65,16 @@ class ItemsController < ApplicationController
         start_date = params[:item][:start_date]
         end_date = params[:item][:end_date]
         #TODO: error message when it fails
-        transaction_params = {:person_id => @person.id, :item_id => params[:id],
+        interaction_params = {:person_id => @person.id, :item_id => params[:id],
                               :date => DateTime.now, :status => :requested,
                               :start_date => start_date, :end_date => end_date}
-        @transaction = Transaction.new(transaction_params)
-        if @transaction.save
-            #puts '-----Success', @transaction.person_id, @transaction.item_id, @transaction.status
+        @interaction = Interaction.new(interaction_params)
+        if @interaction.save
+            #puts '-----Success', @interaction.person_id, @interaction.item_id, @interaction.status
             puts '------------Successful Request!'
         else
             puts '------------Request failed!'
-            @valid_transaction = verify_transaction
+            @valid_interaction = verify_interaction
             render "show"
             return
         end
@@ -84,15 +84,15 @@ class ItemsController < ApplicationController
     def return_item
       find_item_and_person
       # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
-      approved_transaction = find_most_recent_approved_transaction
-      start_date = approved_transaction.start_date
-      end_date = approved_transaction.end_date
-      transaction_params = {:person_id => @person.id, :item_id => params[:id],
+      approved_interaction = find_most_recent_approved_interaction
+      start_date = approved_interaction.start_date
+      end_date = approved_interaction.end_date
+      interaction_params = {:person_id => @person.id, :item_id => params[:id],
                             :date => DateTime.now, :status => :returned,
                             :start_date => start_date, :end_date => end_date}
-      @transaction = Transaction.new(transaction_params)
+      @interaction = Interaction.new(interaction_params)
 
-      if @transaction.save
+      if @interaction.save
         puts '------------Successful return'
         @item.update(current_holder: "")
       else
@@ -114,41 +114,41 @@ class ItemsController < ApplicationController
         @item = Item.find(params[:id])
     end
 
-    def find_most_recent_approved_transaction
-        transaction_with_item = Transaction.where(item_id: @item.id).order("date")
-        transaction_with_item_approved = transaction_with_item.where(status: :approved)
-        last_approved_transaction = transaction_with_item_approved.last
-        return last_approved_transaction
+    def find_most_recent_approved_interaction
+        interaction_with_item = Interaction.where(item_id: @item.id).order("date")
+        interaction_with_item_approved = interaction_with_item.where(status: :approved)
+        last_approved_interaction = interaction_with_item_approved.last
+        return last_approved_interaction
     end
 
     def find_most_recent_return
-        transaction_with_item = Transaction.where(item_id: @item.id).order("date")
-        transaction_with_item_returned = transaction_with_item.where(status: :returned)
-        if transaction_with_item_returned.count > 0
-            last_returned_date = transaction_with_item_returned.last.date
+        interaction_with_item = Interaction.where(item_id: @item.id).order("date")
+        interaction_with_item_returned = interaction_with_item.where(status: :returned)
+        if interaction_with_item_returned.count > 0
+            last_returned_date = interaction_with_item_returned.last.date
             return last_returned_date
         else
             return nil
         end
     end
 
-    def is_a_double_request(requested_transactions)
-        if requested_transactions.where(person_id: @person.id, status: :requested).count > 0
+    def is_a_double_request(requested_interactions)
+        if requested_interactions.where(person_id: @person.id, status: :requested).count > 0
 			return false
 		else
 			return true
 		end
     end
 
-    def verify_transaction
+    def verify_interaction
         #if it is the owner, she/he cannot request the item
         if @person.items.include?(@item)
         	return false
         else
             #in this case you are a borrower requesting an item
-            transaction_with_item = Transaction.where(item_id: @item.id).order("date")
-            if transaction_with_item.count > 0
-                cur_item = transaction_with_item.last
+            interaction_with_item = Interaction.where(item_id: @item.id).order("date")
+            if interaction_with_item.count > 0
+                cur_item = interaction_with_item.last
                 #if the item is returned, anyone can borrow the item again
                 if cur_item.returned?
                     puts "-----------item is returned"
@@ -163,10 +163,10 @@ class ItemsController < ApplicationController
                     puts "-----------the item is requested"
                     last_returned_date = find_most_recent_return
                     if last_returned_date != nil
-                        transactions_after_last_returned_date = transaction_with_item.where("date > ?", last_returned_date)
-                        return is_a_double_request(transactions_after_last_returned_date)
+                        interactions_after_last_returned_date = interaction_with_item.where("date > ?", last_returned_date)
+                        return is_a_double_request(interactions_after_last_returned_date)
                     else
-                        return is_a_double_request(transaction_with_item)
+                        return is_a_double_request(interaction_with_item)
                     end
                 #something is fucked if this happens
                 else
@@ -174,7 +174,7 @@ class ItemsController < ApplicationController
                     #alert
                 end
             else
-                puts "-----no valid transactions"
+                puts "-----no valid interactions"
                 return true
             end
         end

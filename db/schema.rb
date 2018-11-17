@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_161238) do
+ActiveRecord::Schema.define(version: 2018_11_17_213100) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +31,19 @@ ActiveRecord::Schema.define(version: 2018_11_15_161238) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "interactions", force: :cascade do |t|
+    t.integer "person_id"
+    t.integer "item_id"
+    t.datetime "date"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.index ["item_id"], name: "index_interactions_on_item_id"
+    t.index ["person_id"], name: "index_interactions_on_person_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -62,32 +75,10 @@ ActiveRecord::Schema.define(version: 2018_11_15_161238) do
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
-  create_table "reviews", force: :cascade do |t|
-    t.integer "transaction_id"
-    t.string "comment"
-    t.integer "rating"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["transaction_id"], name: "index_reviews_on_transaction_id"
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "transactions", force: :cascade do |t|
-    t.integer "person_id"
-    t.integer "item_id"
-    t.datetime "date"
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.date "start_date"
-    t.date "end_date"
-    t.index ["item_id"], name: "index_transactions_on_item_id"
-    t.index ["person_id"], name: "index_transactions_on_person_id"
   end
 
   create_table "users", force: :cascade do |t|

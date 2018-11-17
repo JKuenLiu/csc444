@@ -1,11 +1,11 @@
-<% if @transaction.errors.any? %>
+<% if @interaction.errors.any? %>
   <div id="error_explanation">
     <h2>
-      <%= pluralize(@transaction.errors.count, "error") %> prohibited
+      <%= pluralize(@interaction.errors.count, "error") %> prohibited
       this item from being saved:
     </h2>
     <ul>
-      <% @transaction.errors.full_messages.each do |msg| %>
+      <% @interaction.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
@@ -37,7 +37,7 @@
 </p>
 
 
-<% if @valid_transaction %>
+<% if @valid_interaction %>
     <%= form_with model: @item, local: true do |form| %>
         <p>
           <%= form.label :start_date %><br>
