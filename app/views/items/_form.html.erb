@@ -1,11 +1,10 @@
 <%= form_with model: @item, local: true do |form| %>
-
   <% if @item.errors.any? %>
     <div id="error_explanation">
-      <h2>
+      <p>
         <%= pluralize(@item.errors.count, "error") %> prohibited
         this item from being saved:
-      </h2>
+      </p>
       <ul>
         <% @item.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -14,33 +13,38 @@
     </div>
   <% end %>
 
-  <p>
+  <div class='form-group'>
     <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </p>
+    <%= form.text_field :name, :class => 'form-control' %>
+    <% if @item.errors.any? %>
+      <% if @item.errors[:name] %>
+        <% @item.errors[:name].each do |msg| %>
+          <small class="form-text text-danger">Name <%= msg %></small>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
 
-  <p>
+  <div class='form-group'>
     <%= form.label :description %><br>
-    <%= form.text_area :description%>
-  </p>
+    <%= form.text_area :description, :class => 'form-control', :row => '3' %>
+  </div>
 
-  <p>
+  <div class="form-group">
     <%= form.label :category %><br>
-    <%= form.text_area :category%>
-  </p>
+    <%= form.select :category, [['Accessories', 1], ['Clothing', 2], ['Electronics', 3]], {}, {:class => 'form-control'} %>
+  </div>
 
-  <p>
-    <%= form.label :photos %>
-    <%= form.file_field :photos, multiple: true%>
-  </p>
+  <div class='form-group'>
+    <%= form.label :photos %><br>
+    <%= form.file_field :photos, multiple: true, :class => 'form-control-file'%>
+  </div>
 
-  <p>
+  <div class='form-group'>
     <%= form.label :tags %><br>
-    <%= text_area_tag :tags%>
-  </p>
+    <%= text_area_tag :tags, '', :class => 'form-control', :row => '3' %>
+  </div>
 
-  <p>
-    <%= form.submit %>
-  </p>
+  <%= form.submit 'Submit', :class => 'btn btn-blue'%>
 
 <% end %>
