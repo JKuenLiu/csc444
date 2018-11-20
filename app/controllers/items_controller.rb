@@ -12,14 +12,21 @@ class ItemsController < ApplicationController
 
             # For all of current users borrowed items, get the most recent interaction that occurred
             # (should be the 'Approved' interaction)
-            @interactions = Interaction.where(person_id: @person.id, item_id: @user_items.map(&:id))
-                                        .order("created_at DESC")
+            logger.debug "number of owned interactions"
+            logger.debug @user_items.map(&:id)
+            @interactions = Interaction.where(person_id: @person.id,
+                                              item_id: @user_items.map(&:id))
+                                       .order("created_at DESC")
+            # @interactions = @user_items.interactions.where(person_id: @person.id)
+            #                                         .order("created_at DESC")
+            logger.debug "number of owned interactions"
+            logger.debug @interactions.count
         end
     end
 
     def update
-        find_item_and_person
-        request_item
+        #find_item_and_person
+        #request_item
     end
 
     def edit
@@ -59,49 +66,6 @@ class ItemsController < ApplicationController
         redirect_to items_path
     end
 
-    def request_item
-        puts "-----------Requesting Item"
-        find_item_and_person
-        start_date = params[:item][:start_date]
-        end_date = params[:item][:end_date]
-        #TODO: error message when it fails
-        interaction_params = {:person_id => @person.id, :item_id => params[:id],
-                              :date => DateTime.now, :status => :requested,
-                              :start_date => start_date, :end_date => end_date}
-        @interaction = Interaction.new(interaction_params)
-        if @interaction.save
-            #puts '-----Success', @interaction.person_id, @interaction.item_id, @interaction.status
-            puts '------------Successful Request!'
-        else
-            puts '------------Request failed!'
-            @valid_interaction = verify_interaction
-            render "show"
-            return
-        end
-        redirect_to @item
-    end
-
-    def return_item
-      find_item_and_person
-      # TODO: Verify here that the items state is borrowed, and current user is the one that has it borrowed
-      approved_interaction = find_most_recent_approved_interaction
-      start_date = approved_interaction.start_date
-      end_date = approved_interaction.end_date
-      interaction_params = {:person_id => @person.id, :item_id => params[:id],
-                            :date => DateTime.now, :status => :returned,
-                            :start_date => start_date, :end_date => end_date}
-      @interaction = Interaction.new(interaction_params)
-
-      if @interaction.save
-        puts '------------Successful return'
-        @item.update(current_holder: "")
-      else
-        puts '------------Return failed'
-      end
-
-      redirect_to @item
-    end
-
 
     ##############################################
     ##############PRIVATE FUNCTIONS###############
@@ -133,6 +97,7 @@ class ItemsController < ApplicationController
     end
 
     def is_a_double_request(requested_interactions)
+        #puts "requested interactions:", requested_interactions.all
         if requested_interactions.where(person_id: @person.id, status: :requested).count > 0
 			return false
 		else
@@ -146,6 +111,10 @@ class ItemsController < ApplicationController
         	return false
         else
             #in this case you are a borrower requesting an item
+            #puts "number of interactions: ", Interaction.all.count, @item.id, Interaction.where(item_id: @item.id).start_date
+            # Interaction.all.each do |i|
+            #     puts "item_id: ", i.item_id
+            # end
             interaction_with_item = Interaction.where(item_id: @item.id).order("date")
             if interaction_with_item.count > 0
                 cur_item = interaction_with_item.last
@@ -166,6 +135,7 @@ class ItemsController < ApplicationController
                         interactions_after_last_returned_date = interaction_with_item.where("date > ?", last_returned_date)
                         return is_a_double_request(interactions_after_last_returned_date)
                     else
+                        puts "-----------not ever returned"
                         return is_a_double_request(interaction_with_item)
                     end
                 #something is fucked if this happens

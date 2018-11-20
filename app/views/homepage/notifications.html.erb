@@ -12,12 +12,14 @@
             		<% last_transation_of_item = @interactions.where(item_id: interaction.item_id).first %>
             		<td> <%= link_to_if !last_transation_of_item.approved?,
                              'Approve',
-                             homepage_approve_request_path(
-                             person_id: interaction.person_id,
+                             {controller: :interactions,
+                             action: :create,
                              item_id: interaction.item_id,
-                             start_date: interaction.start_date,
-                             end_date: interaction.end_date),
-                             method: :post %> </td>
+                             interaction: {
+                                 request_type: 1,
+                                 start_date: interaction.start_date,
+                                 end_date: interaction.end_date,
+                                 person_id: interaction.person_id}}, method: :post %> </td>
             	<% end %>
             </tr>
         <% end %>

@@ -11,13 +11,20 @@
     <% if @user_items %>
         <% @user_items.each_with_index do |item, index| %>
             <tr>
-
               <td><%= link_to item.name, item_path(item) %></td>
-                <% if @show_your_items == 'false' and !@interactions.nil? %>
-
-                    <td><%= link_to_if (@interactions[index].approved?), 'Return Item', items_return_item_path(person_id: @interactions[index].person_id, id: @interactions[index].item_id), method: :post %></td>
-
-                <% end %>
+              <% if @show_your_items == 'false' and !@interactions.nil? %>
+                 <td><%= link_to_if (@interactions[index].approved?),
+                            'Return Item',
+                            {controller: :interactions,
+                             action: :create,
+                             item_id: @interactions[index].item_id,
+                             interaction: {
+                                request_type: 2,
+                                start_date: @interactions[index].start_date,
+                                end_date: @interactions[index].end_date,
+                                person_id: @interactions[index].person_id}}, method: :post %>
+                  </td>
+               <% end %>
             </tr>
         <% end %>
     <% end %>

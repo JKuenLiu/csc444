@@ -38,7 +38,7 @@
 
 
 <% if @valid_interaction %>
-    <%= form_with model: @item, local: true do |form| %>
+    <%= form_with(model: [@item, @item.interactions.build], local: true) do |form| %>
         <p>
           <%= form.label :start_date %><br>
           <%= form.date_field :start_date%>
@@ -48,6 +48,8 @@
           <%= form.label :end_date %><br>
           <%= form.date_field :end_date%>
         </p>
+
+        <%= form.hidden_field :request_type, :value => 0 %>
 
         <p>
           <%= form.submit "Request Item" %>

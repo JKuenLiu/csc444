@@ -23,26 +23,6 @@ class HomepageController < ApplicationController
         @interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
     end
 
-    def approve_request
-        puts "---------approve_request-----------"
-        interaction_params = {:person_id => params[:person_id],
-                              :item_id => params[:item_id],
-                              :date => DateTime.now, :status => :approved,
-                              :start_date => params[:start_date],
-                              :end_date => params[:end_date]}
-        puts interaction_params
-        @interaction = Interaction.new(interaction_params)
-        if @interaction.save
-            puts '-----------Approval Success'
-            @item_update = Item.where(id: interaction_params[:item_id])
-            @item_update.update(current_holder: interaction_params[:person_id])
-        else
-            puts '-----------Approval Failure'
-        end
-
-        redirect_to homepage_notifications_path
-    end
-
     private
     #hacky function made to do some simple data entry. Be careful when you use
     #this function because it will create new entries every time you call it in

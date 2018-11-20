@@ -3,7 +3,9 @@ class Interaction < ApplicationRecord
 	# Can get owner id via the item
 	enum status: [:requested, :approved, :returned]
 
+    belongs_to :item
 	has_many :reviews
+
     validates :start_date,:presence => true
     validates :end_date, :presence => true
     validate :start_date_cannot_be_in_the_past,

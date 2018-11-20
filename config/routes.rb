@@ -16,7 +16,10 @@ Rails.application.routes.draw do
   #get 'item/edit', to: 'item#edit'
 
   #TODO: Define the routes to create transactions hierarchically under an item; each transaction .only has one item
-  resources :items
+  resources :items do
+      resources :interactions
+  end
+
   post 'items/request_item'
   post 'items/return_item'
 
