@@ -1,32 +1,41 @@
-<%=
+<div class='container-fluid mt-5'>
+  <div class='row justify-content-center'>
+    <div class='col-4'>
+      <div class='card'>
+          <div class='card-body'>
+            <h1>Update Person</h1>
+            <%= form_with scope: :person, url: profile_path, :method => "put", local: true do |form| %>
+              <div class='form-group'>
+                <%= form.label :fname, "First Name" %><br>
+                <%= form.text_field :fname, placeholder: @person.fname, :class => 'form-control' %>
+              </div>
 
-  form_with scope: :person, url: profile_path, :method => "put", local: true do |form| %>
-  <p>
-    <%= form.label :fname, "First Name" %><br>
-    <%= form.text_field :fname, placeholder: @person.fname%>
-  </p>
+              <div class='form-group'>
+                <%= form.label :lname, "Last Name" %><br>
+                <%= form.text_field :lname, placeholder: @person.lname, :class => 'form-control' %>
+              </div>
 
-  <p>
-    <%= form.label :lname, "Last Name" %><br>
-    <%= form.text_field :lname, placeholder: @person.lname%>
-  </p>
+              <div class='form-group'>
+                <%= form.label :address, "Address" %><br>
+                <%= form.text_field :addr, placeholder: @person.addr, :class => 'form-control' %>
+              </div>
 
-  <p>
-    <%= form.label :address, "Address" %><br>
-    <%= form.text_field :addr, placeholder: @person.addr%>
-  </p>
+              <div class='form-group'>
+                <%= form.label :phone, "Phone Number" %><br>
+                <%= form.text_field :phone, placeholder: @person.phone, :class => 'form-control' %>
+              </div>
+              
+              <div class='form-group'>
+                <%= form.label :avatar, "Profile Picture" %><br>
+                <%= form.file_field :avatar, :class => 'form-control-file' %>
+              </div>
 
-  <p>
-    <%= form.label :phone, "Phone Number" %><br>
-    <%= form.text_field :phone, placeholder: @person.phone%>
-  </p>
-  
-  <p>
-    <%= form.label :avatar, "Profile Picture" %><br>
-    <%= form.file_field :avatar %>
-  </p>
-
-  <p>
-    <%= form.submit %>
-  </p>
-<% end %>
+              <p>
+                <%= form.submit 'Update', :class => 'btn btn-blue' %>
+              </p>
+            <% end %>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
