@@ -27,7 +27,7 @@
       <%= link_to 'LNDR', homepage_index_path, :class => 'navbar-brand' %>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           <li class="nav-item">
             <%= link_to 'Profile  ', profile_path, :class => 'nav-link' %>
           </li>
@@ -54,10 +54,6 @@
             <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'nav-link' %>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
     <!-- header end -->
