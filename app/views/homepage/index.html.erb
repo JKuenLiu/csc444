@@ -7,10 +7,12 @@
     <% end %>
 </p>
 
-<%= form_tag(homepage_index_path, method: :get) do %>
-  <%= text_field_tag :term, params[:term] %>
-  <%= submit_tag 'Search' %>
-<% end %>
+<div class="container-fluid">
+  <%= form_tag(homepage_index_path, method: :get, :class => 'form-inline my-2 my-lg-0') do %>
+    <%= text_field_tag :term, params[:term], :class => 'form-control mr-sm-2' %>
+    <%= submit_tag 'Search', :class => 'btn btn-blue my-2 my-sm-0'%>
+  <% end %>
+</div>
 
 <h1> Items to Borrow </h1>
 <table>
