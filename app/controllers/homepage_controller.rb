@@ -1,5 +1,7 @@
 class HomepageController < ApplicationController
     skip_before_action :require_login
+    before_action :require_login, only: [:notifications, :history]
+
     def index
         @all_items = Array.new
          if params[:term]
