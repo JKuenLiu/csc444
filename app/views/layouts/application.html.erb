@@ -35,7 +35,7 @@
               <%= link_to 'Profile', person_path(@person), :class => 'nav-link dropdown-toggle', :id => 'navbarDropdown', :role => 'button', 'data-toggle'=>  'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' => 'false' %>
               <div class="dropdown-menu" aria-labelledby='navbarDropdown'>
                 <%= link_to 'View Profile', person_path(@person), :class => 'dropdown-item'%>
-                <%= link_to 'Edit Profile', edit_person_url(@person), :class => 'dropdown-item' %>
+                <%= link_to 'Edit Profile', edit_person_path(@person), :class => 'dropdown-item' %>
                 <%= link_to 'Account Settings', edit_user_registration_path, :class => 'dropdown-item' %>
                 <div class="dropdown-divider"></div>
                 <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'dropdown-item' %>

@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find_by_user_id(current_user.id);
     @person.update(people_params)
-    redirect_to profile_path
+    redirect_to person_path
   end
 
   private
