@@ -1,31 +1,31 @@
-<h1>Notifications</h1>
+<div class="container-fluid mt-3">
+    <h1>Notifications</h1>
 
-<table>
-    <% if @item_interactions %>
-        <% @item_interactions.each do |interactions| %>
-            <% interactions.each do |interaction| %>
-            	<% interaction_person = Person.find(interaction.person_id) %>
-            	<% interaction_item   = Item.find(interaction.item_id) %>
-                <tr>
-            		<td>
-                        <%= interaction_person.fname %>
-                        <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %>
-                    </td>
-            		<td>
-                        <%= link_to 'Approve',
-                            {controller: :interactions,
-                             action: :create,
-                             item_id: interaction.item_id,
-                             interaction: {
-                                 request_type: 1,
-                                 start_date: interaction.start_date,
-                                 end_date: interaction.end_date,
-                                 person_id: interaction.person_id}}, method: :post %>
-                    </td>
-                </tr>
+    <table>
+        <% if @item_interactions %>
+            <% @item_interactions.each do |interactions| %>
+                <% interactions.each do |interaction| %>
+                	<% interaction_person = Person.find(interaction.person_id) %>
+                	<% interaction_item   = Item.find(interaction.item_id) %>
+                    <tr>
+                		<td>
+                            <%= interaction_person.fname %>
+                            <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %>
+                        </td>
+                		<td>
+                            <%= link_to 'Approve',
+                                {controller: :interactions,
+                                 action: :create,
+                                 item_id: interaction.item_id,
+                                 interaction: {
+                                     request_type: 1,
+                                     start_date: interaction.start_date,
+                                     end_date: interaction.end_date,
+                                     person_id: interaction.person_id}}, method: :post %>
+                        </td>
+                    </tr>
+                <% end %>
             <% end %>
         <% end %>
-    <% end %>
-</table>
-
-<%= link_to 'Back', homepage_index_path %>
+    </table>
+</div>

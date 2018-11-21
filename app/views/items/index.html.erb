@@ -1,33 +1,43 @@
 <%# Idea: maybe have the index page with no url params, and just display both your items and borrowed items
     simultaneously %>
 
-<% if @show_your_items == 'true' %>
+<div class="container-fluid mt-5">
+  <% if @show_your_items == 'true' %>
     <h1> Your Items: </h1>
-<% else %>
+  <% else %>
     <h1> Your Borrowed Items: </h1>
-<% end %>
+  <% end %>
 
-<table>
+  <div class="row">
     <% if @user_items %>
         <% @user_items.each_with_index do |item, index| %>
-            <tr>
-              <td><%= link_to item.name, item_path(item) %></td>
-              <% if @show_your_items == 'false' and !@interactions.nil? %>
-                 <td><%= link_to_if (@interactions[index].approved?),
-                            'Return Item',
-                            {controller: :interactions,
-                             action: :create,
-                             item_id: @interactions[index].item_id,
-                             interaction: {
-                                request_type: 2,
-                                start_date: @interactions[index].start_date,
-                                end_date: @interactions[index].end_date,
-                                person_id: @interactions[index].person_id}}, method: :post %>
-                  </td>
-               <% end %>
-            </tr>
+            <div class="col-2 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <% if !item.photos.empty? %>
+                            <%= image_tag(item.photos[0], style:'width:100%', :class => "dblock w-100") %>
+                        <% else %>
+                            <%= image_tag('default_img', style:'width:100%', :class => "dblock w-100") %>
+                        <% end %>
+                        <div class="row justify-content-center">
+                          <%= link_to item.name, item_path(item) %>
+                          <% if @show_your_items == 'false' and !@interactions.nil? %>
+                              <%= link_to_if (@interactions[index].approved?),
+                              'Return Item',
+                              {controller: :interactions,
+                               action: :create,
+                               item_id: @interactions[index].item_id,
+                               interaction: {
+                                  request_type: 2,
+                                  start_date: @interactions[index].start_date,
+                                  end_date: @interactions[index].end_date,
+                                  person_id: @interactions[index].person_id}}, method: :post %>
+                          <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <% end %>
     <% end %>
-</table>
-
-<%= link_to 'Back', homepage_index_path %>
+  </div>
+</div>
