@@ -29,30 +29,31 @@
       <% if user_signed_in? %>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <%= link_to 'Profile  ', profile_path, :class => 'nav-link' %>
+            <li class='nav-item dropdown'>
+              <%= link_to 'Profile', profile_path, :class => 'nav-link dropdown-toggle', :id => 'navbarDropdown', :role => 'button', 'data-toggle'=>  'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' => 'false' %>
+              <div class="dropdown-menu" aria-labelledby='navbarDropdown'>
+                <%= link_to 'View Profile', profile_path, :class => 'dropdown-item'%>
+                <%= link_to 'Edit Profile', profile_edit_path, :class => 'dropdown-item' %>
+                <%= link_to 'Account Settings', edit_user_registration_path, :class => 'dropdown-item' %>
+                <div class="dropdown-divider"></div>
+                <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'dropdown-item' %>
+              </div>
             </li>
             <li class="nav-item">
-              <%= link_to 'Edit Login Settings  ', edit_user_registration_path, :class => 'nav-link' %>
+              <%= link_to "Your Items", items_path(:your_items => 'true'), :class => 'nav-link' %>
             </li>
             <li class="nav-item">
-              <%= link_to "Your Items  ", items_path(:your_items => 'true'), :class => 'nav-link' %>
+              <%= link_to "Borrowed Items", items_path(:your_items => 'false'), :class => 'nav-link' %>
             </li>
             <li class="nav-item">
-              <%= link_to "Borrowed Items  ", items_path(:your_items => 'false'), :class => 'nav-link' %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'History  ', homepage_history_path, :class => 'nav-link' %>
+              <%= link_to 'History', homepage_history_path, :class => 'nav-link' %>
             </li>
             <li class="nav-item">
               <% if @items_due_within_time_period_string %>
-                <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')  ',  homepage_notifications_path, :class => 'nav-link' %>
+                <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path, :class => 'nav-link' %>
               <% else %>
-                <%= link_to 'Notifications  ',  homepage_notifications_path, :class => 'nav-link' %>
+                <%= link_to 'Notifications',  homepage_notifications_path, :class => 'nav-link' %>
               <% end %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'nav-link' %>
             </li>
           </ul>
         </div>
