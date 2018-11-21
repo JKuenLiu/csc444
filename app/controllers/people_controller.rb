@@ -1,4 +1,16 @@
 class PeopleController < ApplicationController
+  skip_before_action :require_login, :num_of_notifications
+
+  def new
+      # @person = Person.new
+  end
+
+  def create
+      # @person = Person.new
+      # @person.user_id = self.resource.id
+      # @person.save
+  end
+
   def edit
     @person = Person.find_by_user_id(current_user.id);
   end
