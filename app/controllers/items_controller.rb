@@ -25,8 +25,13 @@ class ItemsController < ApplicationController
     end
 
     def update
-        #find_item_and_person
-        #request_item
+        find_item_and_person
+
+        if @item.update(item_params)
+            redirect_to @item
+        else
+            render 'edit'
+        end
     end
 
     def edit
