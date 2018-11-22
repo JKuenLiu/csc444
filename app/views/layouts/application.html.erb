@@ -25,10 +25,11 @@
       </button>
 
       <%= link_to 'LNDR', homepage_index_path, :class => 'navbar-brand' %>
+      <% @person = nil %>
       <% if user_signed_in? %>
         <% @person = Person.find_by_user_id(current_user.id) %>
       <% end %>
-      <% if user_signed_in? %>
+      <% if user_signed_in? and !@person.blank? %>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class='nav-item dropdown'>

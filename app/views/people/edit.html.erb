@@ -16,8 +16,23 @@
               </div>
 
               <div class='form-group'>
-                <%= form.label :address, "Address" %><br>
-                <%= form.text_field :addr, placeholder: @person.addr, :class => 'form-control' %>
+                <%= form.label :street, "Street" %><br>
+                <%= form.text_field :street, placeholder: @person.street, :class => 'form-control' %>
+              </div>
+
+              <div class='form-group'>
+                <%= form.label :city, "City" %><br>
+                <%= form.text_field :city, placeholder: @person.city, :class => 'form-control' %>
+              </div>
+
+              <div class='form-group'>
+                <%= form.label :province, "Province" %><br>
+                <%= form.text_field :province, placeholder: @person.province, :class => 'form-control' %>
+              </div>
+
+              <div class='form-group'>
+                <%= form.label :country, "Country" %><br>
+                <%= form.text_field :country, placeholder: @person.country, :class => 'form-control' %>
               </div>
 
               <div class='form-group'>
