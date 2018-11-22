@@ -21,6 +21,12 @@ class ApplicationController < ActionController::Base
 	    #return 0
 	    puts "-----counting overdue items------"
 	    @person = Person.find_by_user_id(current_user.id)
+        if current_user and @person.blank?
+            #delete the current user and try again
+            current_user.destroy
+            redirect_to homepage_index_path
+            return
+        end
 	    user_items = Item.where(current_holder: @person.id)
 	    time_period = 3.days
 	    puts "-------item ids:", user_items.ids

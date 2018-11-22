@@ -1,26 +1,26 @@
-<h1>History</h1>
+<div class="container-fluid mt-3">
+    <h1>History</h1>
 
-<table>
-    <% if @interactions.count > 0 %>
-        <% @interactions.each do |interaction| %>
-        	<% interaction_person = Person.find(interaction.person_id) %>
-        	<% interaction_item = Item.find(interaction.item_id) %>
-            <tr>
-                <td><%= interaction.date %></td>
-            	<% if interaction.requested? %>
-            		<td><%= interaction_person.fname %> <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %></td>
-            	<% end %>
+    <table>
+        <% if @interactions.count > 0 %>
+            <% @interactions.each do |interaction| %>
+            	<% interaction_person = Person.find(interaction.person_id) %>
+            	<% interaction_item = Item.find(interaction.item_id) %>
+                <tr>
+                    <td><%= interaction.date %></td>
+                	<% if interaction.requested? %>
+                		<td><%= interaction_person.fname %> <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %></td>
+                	<% end %>
 
-                <% if interaction.approved? %>
-                    <td>You have approved <%= interaction_person.fname %> <%= interaction_person.lname %> to borrow your item <%= interaction_item.name %></td>
-                <% end %>
+                    <% if interaction.approved? %>
+                        <td>You have approved <%= interaction_person.fname %> <%= interaction_person.lname %> to borrow your item <%= interaction_item.name %></td>
+                    <% end %>
 
-                <% if interaction.returned? %>
-                    <td><%= interaction_person.fname %> <%= interaction_person.lname %> has returned your item <%= interaction_item.name %></td>
-                <% end %>
-            </tr>
+                    <% if interaction.returned? %>
+                        <td><%= interaction_person.fname %> <%= interaction_person.lname %> has returned your item <%= interaction_item.name %></td>
+                    <% end %>
+                </tr>
+            <% end %>
         <% end %>
-    <% end %>
-</table>
-
-<%= link_to 'Back', homepage_index_path %>
+    </table>
+</div>

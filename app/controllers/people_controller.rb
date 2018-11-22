@@ -1,4 +1,20 @@
 class PeopleController < ApplicationController
+  skip_before_action :require_login, :num_of_notifications
+
+  def new
+      @person = Person.new
+  end
+
+  def create
+      @person = Person.new(people_params)
+      @person.user_id = current_user.id
+      if @person.save
+          redirect_to homepage_index_path
+      else
+          render 'new'
+      end
+  end
+
   def edit
     @person = Person.find_by_user_id(current_user.id);
   end
@@ -11,12 +27,13 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find_by_user_id(current_user.id);
     @person.update(people_params)
-    redirect_to profile_path
+    redirect_to person_path
   end
 
   private
     def people_params
-      params.require(:person).permit(:fname, :lname, :addr, :phone, :avatar)
+      params.require(:person).permit(:fname, :lname, :street, :city, :province,
+                                     :country, :phone, :avatar)
     end
 
     def add_default_image

@@ -6,9 +6,11 @@ Rails.application.routes.draw do
   post 'homepage/approve_request'
 
   #Profile routes
-  get 'profile', to: 'people#show'
-  get 'profile/edit', to: 'people#edit'
-  put 'profile', to: 'people#update'
+  # get 'profile', to: 'people#show'
+  # get 'profile/edit', to: 'people#edit'
+  # put 'profile', to: 'people#update'
+  # get 'profile/new', to: 'people#new'
+  resources :people
 
   #get 'item/index', to: 'item#index'
   #get 'item/show', to: 'item#show'
