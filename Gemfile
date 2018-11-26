@@ -53,6 +53,8 @@ group :development, :test do
 end
 
 gem 'devise'
+#for location based queries
+gem 'geocoder'
 
 # gem 'mini_racer'
 
