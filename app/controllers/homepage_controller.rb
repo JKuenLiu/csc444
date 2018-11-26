@@ -44,6 +44,10 @@ class HomepageController < ApplicationController
             #unique_users[item.person_id] = 1
             other_person_location = Person.find_by_user_id(item.person_id)
             distance = cur_person_location.distance_to(other_person_location, :km)
+            #if you have an invalid address
+            if distance.blank?
+                return
+            end
             item_distance[item.id] = (distance*10).ceil/10.0
         end
         return item_distance
