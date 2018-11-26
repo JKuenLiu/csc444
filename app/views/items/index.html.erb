@@ -17,7 +17,7 @@
                         <% if !item.photos.empty? %>
                             <%= image_tag(item.photos[0], style:'width:100%', :class => "dblock w-100") %>
                         <% else %>
-                            <%= image_tag('default_img', style:'width:100%', :class => "dblock w-100") %>
+                            <%= image_tag('default_img.png', style:'width:100%', :class => "dblock w-100") %>
                         <% end %>
                         <div class="row justify-content-center">
                           <%= link_to item.name, item_path(item) %>
