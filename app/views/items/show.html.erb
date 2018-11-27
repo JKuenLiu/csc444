@@ -79,8 +79,8 @@
       <h3>Location</h3>
       <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-s+ff6666(#{@longitude},#{@latitude})/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ" %>
 
-      <h3>Borrow Item</h3>
       <% if @valid_interaction %>
+          <h3>Borrow Item</h3>
           <%= form_with(model: [@item, @item.interactions.build], local: true) do |form| %>
               <div class="form-group" >
                 <%= form.label :start_date %><br>

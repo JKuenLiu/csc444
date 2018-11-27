@@ -15,6 +15,10 @@ class Item < ApplicationRecord
         other_person_location = Person.find_by_user_id(self.person_id)
         distance = cur_person_location.distance_to(other_person_location, :km)
 
+        if distance.blank?
+            return nil
+        end
+
         return distance.round(2)
     end
 end
