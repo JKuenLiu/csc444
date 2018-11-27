@@ -113,7 +113,7 @@ class InteractionsController < ApplicationController
             logger.debug "Successful return"
             @item.update(current_holder: "")
 
-            redirect_to new_person_review_url(@item.person_id)
+            redirect_to new_person_review_url(@person,  :interaction_id => @interaction.id, :item_id => @item.id)
         else
             logger.debug "Return failed"
             redirect_to @item

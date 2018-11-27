@@ -1,2 +1,13 @@
-<h1>Reviews#new</h1>
-<p>Find me in app/views/reviews/new.html.erb</p>
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h1></h1>
+          <h3>Please leave a review for <%= @person.fname %> and their <%= @item.name  %>!</h3>
+          <%= render 'form' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

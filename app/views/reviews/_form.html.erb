@@ -1,50 +1,20 @@
-<%= form_with model: @review, local: true do |form| %>
-  <% if @review.errors.any? %>
-    <div id="error_explanation">
-      <p>
-        <%= pluralize(@review.errors.count, "error") %> prohibited
-        this item from being saved:
-      </p>
-      <ul>
-        <% @item.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for @review, url: {action: :create}, local: true do |form| %>
+
 
   <div class='form-group'>
-    <%= form.label :name %><br>
-    <%= form.text_field :name, :class => 'form-control' %>
-    <% if @item.errors.any? %>
-      <% if @item.errors[:name] %>
-        <% @item.errors[:name].each do |msg| %>
-          <small class="form-text text-danger">Name <%= msg %></small>
-        <% end %>
-      <% end %>
-    <% end %>
+    <%= form.label :rating %><br>
+    <%= form.number_field :rating, in: 1.0..5.0, step: 0.5, :class => 'form-control', :row => '3' %>
+    <%#= range_field_tag :rating, in: 1..5, :class => 'form-control', :row => '3' %>
+<!--    <div id='rating_output'></div>-->
+    <%#= range_field_tag :rating, '', :class => 'form-control', :row => '3' %>
   </div>
 
   <div class='form-group'>
-    <%= form.label :description %><br>
-    <%= form.text_area :description, :class => 'form-control', :row => '3' %>
+    <%= form.label :comment %><br>
+    <%= form.text_area :comment, :class => 'form-control', :row => '3' %>
   </div>
 
-  <div class='form-group'>
-    <%= form.label :category %><br>
-    <%= form.select :category, [['Accessories', 1], ['Clothing', 2], ['Electronics', 3]], {}, {:class => 'form-control'} %>
-  </div>
-
-  <div class='form-group'>
-    <%= form.label :photos %><br>
-    <%= form.file_field :photos, multiple: true, :class => 'form-control-file'%>
-  </div>
-
-  <div class='form-group'>
-    <%= form.label :tags %><br>
-    <%= text_area_tag :tags, '', :class => 'form-control', :row => '3' %>
-  </div>
-
+  <%= form.hidden_field :interaction_id, :value => @interaction.id %>
   <%= form.submit 'Submit', :class => 'btn btn-blue'%>
 
 <% end %>
