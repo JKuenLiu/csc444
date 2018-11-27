@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get 'homepage/index'
 
   get 'homepage/history'
@@ -10,7 +11,9 @@ Rails.application.routes.draw do
   # get 'profile/edit', to: 'people#edit'
   # put 'profile', to: 'people#update'
   # get 'profile/new', to: 'people#new'
-  resources :people
+  resources :people do
+    resources :reviews, only:[:index, :new, :create]
+  end
 
   #get 'item/index', to: 'item#index'
   #get 'item/show', to: 'item#show'

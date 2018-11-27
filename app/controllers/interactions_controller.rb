@@ -112,10 +112,12 @@ class InteractionsController < ApplicationController
         if @interaction.save
             logger.debug "Successful return"
             @item.update(current_holder: "")
+
+            redirect_to new_person_review_url(@item.person_id)
         else
             logger.debug "Return failed"
+            redirect_to @item
         end
-        redirect_to @item
     end
 
 end
