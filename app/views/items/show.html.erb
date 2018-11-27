@@ -70,26 +70,30 @@
       <p><%= @item.category %></p>
 
       <h3>Tags</h3>
-      <p><%= @item.tags.map{|item| item.name}.join(", ") %></p>
+      <p>
+        <% @item.tags.each do |item| %>
+          <%= link_to ('#' + item.name), homepage_index_path(:term => item.name) %>
+        <% end %>
+      </p>
 
-
+      <h3>Borrow Item</h3>
       <% if @valid_interaction %>
           <%= form_with(model: [@item, @item.interactions.build], local: true) do |form| %>
-              <p>
+              <div class="form-group" >
                 <%= form.label :start_date %><br>
-                <%= form.date_field :start_date%>
-              </p>
+                <%= form.date_field :start_date, :class => 'form-control' %>
+              </div>
 
-              <p>
+              <div class="form-group" >
                 <%= form.label :end_date %><br>
-                <%= form.date_field :end_date%>
-              </p>
+                <%= form.date_field :end_date, :class => 'form-control' %>
+              </div>
 
               <%= form.hidden_field :request_type, :value => 0 %>
 
-              <p>
-                <%= form.submit "Request Item" %>
-              </p>
+              <div class="row justify-content-center">
+                <%= form.submit 'Request Item', :class => 'btn btn-blue'%>
+              </div>
           <% end %>
       <% end %>
     </div>
