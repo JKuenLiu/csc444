@@ -6,7 +6,9 @@ class HomepageController < ApplicationController
         @all_items = Array.new
          if params[:term]
              @all_items = Item.where('name LIKE ?', "%#{params[:term]}%")
-             Tag.where('name LIKE ?', "%#{params[:term]}%").each{|tag| @all_items += tag.items}
+             Tag.where('name LIKE ?', "%#{params[:term]}%").each do|tag|
+                 @all_items += tag.items.select{|item|!@all_items.include? item}
+             end
          else
              @all_items = Item.all
          end

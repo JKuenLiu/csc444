@@ -23,6 +23,17 @@ describe HomepageController, type: :controller do
       get :index
       expect(assigns(:all_items)).to eq (fake_items)
     end
+    it 'test items with same tag and name do not appear twice' do
+      fake_sports_tag = instance_double("Tag", :name => "ball")
+      fake_tags = [fake_sports_tag]
+      fake_items = [instance_double("Item", :name => "ball")]
+      expect(Tag).to receive(:where).with("name LIKE ?", "%ball%").and_return(fake_tags)
+      expect(fake_sports_tag).to receive(:items).and_return(fake_items)
+      expect(Item).to receive(:where).with("name LIKE ?", "%ball%").and_return(fake_items)
+      get :index, params: {:term => "ball"}
+      expect(assigns(:all_items)).to eq (fake_items)
+    end
+
   end
 
 end
