@@ -159,7 +159,7 @@ class ItemsController < ApplicationController
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category, photos: [])
     end
 
-  def populateTagLinks
+    def populateTagLinks
       tagsList = params[:tags].split(",").map(&:strip) #split by commas and remove whitespaces
       tagsList.each do |item|
           curTag = Tag.find_by_name(item)
@@ -168,5 +168,5 @@ class ItemsController < ApplicationController
           end
           @item.tags << curTag
       end
-  end
+    end
 end

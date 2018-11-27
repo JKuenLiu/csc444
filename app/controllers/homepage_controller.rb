@@ -10,8 +10,6 @@ class HomepageController < ApplicationController
          else
              @all_items = Item.all
          end
-         @all_items_distance = get_item_distance(@all_items)
-         puts "all item distances", @all_items_distance
     end
 
     def history
@@ -33,25 +31,6 @@ class HomepageController < ApplicationController
     ##############PRIVATE FUNCTIONS###############
     ##############################################
     private
-
-    def get_item_distance(all_items)
-        if current_user.blank?
-            return nil
-        end
-        item_distance  = Hash.new
-        cur_person_location = Person.find_by_user_id(current_user.id)
-        all_items.each do |item|
-            #unique_users[item.person_id] = 1
-            other_person_location = Person.find_by_user_id(item.person_id)
-            distance = cur_person_location.distance_to(other_person_location, :km)
-            #if you have an invalid address
-            if distance.blank?
-                return
-            end
-            item_distance[item.id] = (distance*10).ceil/10.0
-        end
-        return item_distance
-    end
 
     def get_pending_requests
         if @items.blank?

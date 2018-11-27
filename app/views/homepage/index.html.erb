@@ -23,8 +23,10 @@
                         <% end %>
                         <div class="row justify-content-center">
                           <%= link_to item.name, item_path(item) %>
-                          <% if !@all_items_distance.blank? %>
-                             : <%= @all_items_distance[item.id] %> km away
+                        </div>
+                        <div class="row justify-content-center">
+                          <% if item.get_item_distance(current_user) %>
+                             <%= item.get_item_distance(current_user) %> km away
                           <% end %>
                         </div>
                     </div>
