@@ -59,7 +59,7 @@ gem 'devise'
 #for location based queries
 gem 'geocoder'
 
-gem 'mini_racer'
+# gem 'mini_racer'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
