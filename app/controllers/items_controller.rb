@@ -42,6 +42,8 @@ class ItemsController < ApplicationController
         find_item_and_person
         @valid_interaction = verify_interaction
         @interaction = Interaction.new
+
+        @latitude, @longitude = get_item_location
     end
 
     def new
@@ -168,5 +170,14 @@ class ItemsController < ApplicationController
           end
           @item.tags << curTag
       end
+    end
+
+    def get_item_location
+        if current_user.blank?
+            return nil
+        end
+        cur_person = Person.find_by_user_id(current_user.id)
+
+        return cur_person.latitude, cur_person.longitude
     end
 end

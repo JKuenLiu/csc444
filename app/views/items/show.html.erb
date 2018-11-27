@@ -71,10 +71,13 @@
 
       <h3>Tags</h3>
       <p>
-        <% @item.tags.each do |item| %>
-          <%= link_to ('#' + item.name), homepage_index_path(:term => item.name) %>
+        <% @item.tags.each do |tag| %>
+          <%= link_to ('#' + tag.name), homepage_index_path(:term => tag.name) %>
         <% end %>
       </p>
+
+      <h3>Location</h3>
+      <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-s+ff6666(#{@longitude},#{@latitude})/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ" %>
 
       <h3>Borrow Item</h3>
       <% if @valid_interaction %>
