@@ -9,8 +9,9 @@
                 	<% interaction_item   = Item.find(interaction.item_id) %>
                     <tr>
                 		<td>
-                            <%= interaction_person.fname %>
-                            <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %>
+                            <%= link_to "#{interaction_person.fname + " " + interaction_person.lname}",
+                                person_path(interaction_person) %>
+                            has requested to borrow your item <%= interaction_item.name %>
                         </td>
                 		<td>
                             <%= link_to 'Approve',

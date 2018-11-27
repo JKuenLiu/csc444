@@ -1,5 +1,7 @@
 <div class='container-fluid mt-3'>
-	<%= link_to 'Edit Profile Information', edit_person_path %>
+    <% if @is_current_user %>
+        <%= link_to 'Edit Profile Information', edit_person_path %>
+    <% end %>
 
 	<div class='row'>
 		<div class='col-4'>
@@ -16,22 +18,29 @@
 							  <strong>Last Name:</strong>
 							  <%= @person.lname %>
 							</p>
-							<p>
-							  <strong>Street Address:</strong>
-							  <%= @person.street %>
-							</p>
-                            <p>
-                              <strong>City:</strong>
-                              <%= @person.city %>
-                            </p>
-                            <p>
-                              <strong>Province:</strong>
-                              <%= @person.province %>
-                            </p>
-                            <p>
-                              <strong>Country:</strong>
-                              <%= @person.country %>
-                            </p>
+                            <% if @is_current_user %>
+    							<p>
+    							  <strong>Street Address:</strong>
+    							  <%= @person.street %>
+    							</p>
+                                <p>
+                                  <strong>City:</strong>
+                                  <%= @person.city %>
+                                </p>
+                                <p>
+                                  <strong>Province:</strong>
+                                  <%= @person.province %>
+                                </p>
+                                <p>
+                                  <strong>Country:</strong>
+                                  <%= @person.country %>
+                                </p>
+                            <% else %>
+                                <p>
+                                  <strong>Email:</strong>
+                                  <%= User.find_by_id(@person.user_id).email %>
+                                </p>
+                            <% end %>
 							<p>
 							  <strong>Phone Number:</strong>
 							  <%= @person.phone %>

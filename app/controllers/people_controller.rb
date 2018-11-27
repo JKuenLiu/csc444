@@ -20,7 +20,11 @@ class PeopleController < ApplicationController
   end
 
   def show
-    @person = Person.find_by_user_id(current_user.id);
+    @person = Person.find_by_id(params[:id]);
+    @is_current_user = true
+    if current_user.id != Person.find_by_id(params[:id]).user_id
+        @is_current_user = false
+    end
     add_default_image
   end
 

@@ -21,18 +21,20 @@
                         <% end %>
                         <div class="row justify-content-center">
                           <%= link_to item.name, item_path(item) %>
-                          <% if @show_your_items == 'false' and !@interactions.nil? %>
-                              <%= link_to_if (@interactions[index].approved?),
-                              'Return Item',
-                              {controller: :interactions,
-                               action: :create,
-                               item_id: @interactions[index].item_id,
-                               interaction: {
-                                  request_type: 2,
-                                  start_date: @interactions[index].start_date,
-                                  end_date: @interactions[index].end_date,
-                                  person_id: @interactions[index].person_id}}, method: :post %>
-                          <% end %>
+                        </div>
+                        <div class="row justify-content-center">
+                            <% if @show_your_items == 'false' and !@interactions.nil? %>
+                                <%= link_to_if (@interactions[index].approved?),
+                                'Return Item',
+                                {controller: :interactions,
+                                 action: :create,
+                                 item_id: @interactions[index].item_id,
+                                 interaction: {
+                                    request_type: 2,
+                                    start_date: @interactions[index].start_date,
+                                    end_date: @interactions[index].end_date,
+                                    person_id: @interactions[index].person_id}}, method: :post %>
+                            <% end %>
                         </div>
                     </div>
                 </div>

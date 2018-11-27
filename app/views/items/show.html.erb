@@ -63,6 +63,9 @@
                      data: { confirm: 'Are you sure?' } %>
       <% end %>
 
+      <h3>Lender</h3>
+      <p><%= link_to @item_owner.fname, person_path(@item_owner) %></p>
+
       <h3>Description</h3>
       <p><%= @item.description %></p>
 

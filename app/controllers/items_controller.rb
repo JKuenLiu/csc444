@@ -42,7 +42,7 @@ class ItemsController < ApplicationController
         find_item_and_person
         @valid_interaction = verify_interaction
         @interaction = Interaction.new
-
+        @item_owner  = Person.find_by_id(@item.person_id)
         @latitude, @longitude = get_item_location
     end
 
