@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   get 'homepage/notifications'
   post 'homepage/approve_request'
 
+  get 'homepage/about'
+  get 'homepage/contact'
+  get 'homepage/faq'
+  get 'homepage/policy'
+  get 'homepage/terms'
+
   #Profile routes
   # get 'profile', to: 'people#show'
   # get 'profile/edit', to: 'people#edit'
