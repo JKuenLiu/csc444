@@ -10,14 +10,14 @@ class ApplicationController < ActionController::Base
 
 	def num_of_notifications
 		if user_signed_in?
-			@items_due_within_time_period = count_items_due_within_time_period
+			@items_due_within_time_period = count_items_due_within_time_period(3.days)
 			@items_due_within_time_period_string = @items_due_within_time_period.to_s
 		else
 			@items_due_within_time_period_string = nil
 		end
 	end
 
-	def count_items_due_within_time_period
+	def count_items_due_within_time_period(time_period)
 	    #return 0
 	    puts "-----counting overdue items------"
 	    @person = Person.find_by_user_id(current_user.id)
@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
             return
         end
 	    user_items = Item.where(current_holder: @person.id)
-	    time_period = 3.days
 	    puts "-------item ids:", user_items.ids
 	    approved_item_interactions = []
 	    user_items.each do |i|
@@ -42,10 +41,11 @@ class ApplicationController < ActionController::Base
 	        return 0
 	    end
 	    puts "-----potentially overdue item"
-	    overdue_items = 0
+	    remind_items = 0
 	    approved_item_interactions.each do |interaction|
-	        if interaction.end_date > Date.today + time_period
-	            overdue_items += 1
+	        if Date.today - time_period <= interaction.end_date &&
+               Date.today >= interaction.end_date
+	            remind_items += 1
 	        end
 	    end
 	    # <% if @items_due_within_time_period > 0 %>
@@ -54,6 +54,6 @@ class ApplicationController < ActionController::Base
 	    #   <%= link_to 'Notifications',  homepage_notifications_path %> |
 	    # <% end %>
 
-	    return overdue_items
+	    return remind_items
 	end
 end

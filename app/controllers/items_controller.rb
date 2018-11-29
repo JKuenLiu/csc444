@@ -43,7 +43,7 @@ class ItemsController < ApplicationController
         @valid_interaction = verify_interaction
         @interaction = Interaction.new
         @item_owner  = Person.find_by_id(@item.person_id)
-        @latitude, @longitude = get_item_location
+        @latitude, @longitude = get_item_location(@item_owner)
     end
 
     def new
@@ -172,12 +172,12 @@ class ItemsController < ApplicationController
       end
     end
 
-    def get_item_location
-        if current_user.blank?
-            return nil
-        end
-        cur_person = Person.find_by_user_id(current_user.id)
+    def get_item_location(item_owner)
+        # if current_user.blank?
+        #     return nil
+        # end
+        # cur_person = Person.find_by_id(@item.person_id)
 
-        return cur_person.latitude, cur_person.longitude
+        return item_owner.latitude, item_owner.longitude
     end
 end
