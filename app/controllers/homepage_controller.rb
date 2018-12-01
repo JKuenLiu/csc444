@@ -21,44 +21,44 @@ class HomepageController < ApplicationController
     end
 
 
-    def notifications
-        @person = Person.find_by_user_id(current_user.id)
-        @items = @person.items
-        #@interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
-        @item_interactions = get_pending_requests
-        #@interaction = get_pending_notifications
-    end
+    # def notifications
+    #     @person = Person.find_by_user_id(current_user.id)
+    #     @items = @person.items
+    #     #@interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
+    #     @item_interactions = get_pending_requests
+    #     @interaction = get_pending_notifications
+    # end
 
     ##############################################
     ##############PRIVATE FUNCTIONS###############
     ##############################################
     private
 
-    def get_pending_requests
-        if @items.blank?
-            return nil
-        end
-        #last_approved_interactions = []
-        pending_notifications      = []
-        @items.each do |i|
-            item_interactions = Interaction.where(item_id: i.id).order("date")
-            if !item_interactions.blank?
-                last_approved_interaction = item_interactions.where(status: :approved).last
-                last_returned_interaction = item_interactions.where(status: :returned).last
-
-                if (last_approved_interaction.blank? && last_returned_interaction.blank?) ||
-                   (!last_returned_interaction.blank? &&
-                    last_returned_interaction.date > last_approved_interaction.date)
-                    #get all requests after returned date
-                    if !last_returned_interaction.blank?
-                        last_returned_date = last_returned_interaction.date
-                        pending_notifications.push(item_interactions.where("date > ?", last_returned_date))
-                    else
-                        pending_notifications.push(item_interactions)
-                    end
-                end
-            end
-        end
-        return pending_notifications
-    end
+    # def get_pending_requests
+    #     if @items.blank?
+    #         return nil
+    #     end
+    #     #last_approved_interactions = []
+    #     pending_notifications      = []
+    #     @items.each do |i|
+    #         item_interactions = Interaction.where(item_id: i.id).order("date")
+    #         if !item_interactions.blank?
+    #             last_approved_interaction = item_interactions.where(status: :approved).last
+    #             last_returned_interaction = item_interactions.where(status: :returned).last
+    #
+    #             if (last_approved_interaction.blank? && last_returned_interaction.blank?) ||
+    #                (!last_returned_interaction.blank? &&
+    #                 last_returned_interaction.date > last_approved_interaction.date)
+    #                 #get all requests after returned date
+    #                 if !last_returned_interaction.blank?
+    #                     last_returned_date = last_returned_interaction.date
+    #                     pending_notifications.push(item_interactions.where("date > ?", last_returned_date))
+    #                 else
+    #                     pending_notifications.push(item_interactions)
+    #                 end
+    #             end
+    #         end
+    #     end
+    #     return pending_notifications
+    # end
 end

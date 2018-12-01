@@ -1,0 +1,32 @@
+<div class="container-fluid mt-3">
+    <h1>Notifications</h1>
+
+    <table>
+        <% if @approved_item_interactions %>
+            <% @approved_item_interactions.each do |interactions| %>
+                <% interactions.each do |interaction| %>
+                	<% interaction_person = Person.find(interaction.person_id) %>
+                	<% interaction_item   = Item.find(interaction.item_id) %>
+                    <tr>
+                		<td>
+                            <%= link_to "#{interaction_person.fname + " " + interaction_person.lname}",
+                                person_path(interaction_person) %>
+                            has requested to borrow your item <%= interaction_item.name %>
+                        </td>
+                		<td>
+                            <%= link_to 'Approve',
+                                {controller: :interactions,
+                                 action: :create,
+                                 item_id: interaction.item_id,
+                                 interaction: {
+                                     request_type: 1,
+                                     start_date: interaction.start_date,
+                                     end_date: interaction.end_date,
+                                     person_id: interaction.person_id}}, method: :post %>
+                        </td>
+                    </tr>
+                <% end %>
+            <% end %>
+        <% end %>
+    </table>
+</div>

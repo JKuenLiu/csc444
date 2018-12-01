@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'homepage/index'
 
   get 'homepage/history'
-  get 'homepage/notifications'
+  #get 'homepage/notifications'
+  get 'notifications', action: :index, controller: 'notifications'
   post 'homepage/approve_request'
 
   get 'homepage/about'

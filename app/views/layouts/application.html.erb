@@ -53,9 +53,9 @@
             </li>
             <li class="nav-item">
               <% if @items_due_within_time_period_string %>
-                <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path, :class => 'nav-link' %>
+                <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  notifications_url, :class => 'nav-link' %>
               <% else %>
-                <%= link_to 'Notifications',  homepage_notifications_path, :class => 'nav-link' %>
+                <%= link_to 'Notifications',  notifications_url, :class => 'nav-link' %>
               <% end %>
             </li>
           </ul>

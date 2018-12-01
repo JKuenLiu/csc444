@@ -95,7 +95,7 @@ class InteractionsController < ApplicationController
         logger.debug "number of interactions after approval: "
         logger.debug Interaction.all.count
 
-        redirect_to homepage_notifications_path
+        redirect_to notifications_url
     end
 
     def return_item
