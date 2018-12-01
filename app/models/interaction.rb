@@ -4,7 +4,7 @@ class Interaction < ApplicationRecord
 	enum status: [:requested, :approved, :returned]
 
     belongs_to :item
-	has_many :reviews
+	  has_one :review
 
     validates :start_date,:presence => true
     validates :end_date, :presence => true
