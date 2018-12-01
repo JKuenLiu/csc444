@@ -9,51 +9,112 @@ class ApplicationController < ActionController::Base
 	end
 
 	def num_of_notifications
+        @num_notifictions_str = nil
 		if user_signed_in?
-			@items_due_within_time_period = count_items_due_within_time_period(3.days)
-			@items_due_within_time_period_string = @items_due_within_time_period.to_s
-		else
-			@items_due_within_time_period_string = nil
-		end
+            num_notifictions = get_number_of_notifications()
+            if num_notifictions > 99
+                @num_notifictions = "99+"
+            else
+                @num_notifictions_str = num_notifictions.to_s
+            end
+        end
 	end
 
-	def count_items_due_within_time_period(time_period)
-	    #return 0
-	    puts "-----counting overdue items------"
-	    @person = Person.find_by_user_id(current_user.id)
+    def get_number_of_notifications
+        pending_requests = get_pending_requests()
+        items_approaching_due_date = items_due_within_time_period(3.days)
+        items_overdue = get_items_overdue()
+        total_notifications = 0
+
+        total_notifications =
+            items_overdue.count +
+            items_approaching_due_date.count
+
+        if !pending_requests.blank?
+            pending_requests.each do |request|
+                total_notifications += request.count
+            end
+        end
+        return total_notifications
+    end
+
+    def get_approved_item_interactions
+        @person = Person.find_by_user_id(current_user.id)
         if current_user and @person.blank?
             #delete the current user and try again
             current_user.destroy
             redirect_to homepage_index_path
             return
         end
-	    user_items = Item.where(current_holder: @person.id)
-	    puts "-------item ids:", user_items.ids
-	    approved_item_interactions = []
-	    user_items.each do |i|
-	        #the most recent interaction status of the current holder has to be
-	        #"approved"
-	        last_interaction = Interaction.where(item_id: i.id).order("date").last
-	        approved_item_interactions.push(last_interaction)
-	    end
+        user_items = Item.where(current_holder: @person.id)
+        approved_item_interactions = []
+        user_items.each do |i|
+            #the most recent interaction status of the current holder has to be
+            #"approved"
+            last_interaction = Interaction.where(item_id: i.id).order("date").last
+            approved_item_interactions.push(last_interaction)
+        end
+        return approved_item_interactions
+    end
+
+    def items_due_within_time_period(time_period)
+        approved_item_interactions = get_approved_item_interactions()
 	    if approved_item_interactions.count < 1
-	        puts "-----no overdue items:"
-	        return 0
+	        return []
 	    end
-	    puts "-----potentially overdue item"
-	    remind_items = 0
+	    remind_items = []
 	    approved_item_interactions.each do |interaction|
 	        if Date.today - time_period <= interaction.end_date &&
                Date.today >= interaction.end_date
-	            remind_items += 1
+	            remind_items.push(interaction)
 	        end
 	    end
-	    # <% if @items_due_within_time_period > 0 %>
-	    #   <%= link_to 'Notifications (' + @items_due_within_time_period_string + ')',  homepage_notifications_path %> |
-	    # <% else %>
-	    #   <%= link_to 'Notifications',  homepage_notifications_path %> |
-	    # <% end %>
 
 	    return remind_items
 	end
+
+    def get_items_overdue
+        approved_item_interactions = get_approved_item_interactions()
+	    if approved_item_interactions.count < 1
+	        return []
+	    end
+	    overdue_items = []
+	    approved_item_interactions.each do |interaction|
+	        if Date.today > interaction.end_date
+	            overdue_items.push(interaction)
+	        end
+	    end
+
+	    return overdue_items
+    end
+
+    def get_pending_requests
+        person = Person.find_by_user_id(current_user.id)
+        items = person.items
+        if items.blank?
+            return nil
+        end
+        #last_approved_interactions = []
+        pending_notifications      = []
+        items.each do |i|
+            item_interactions = Interaction.where(item_id: i.id).order("date")
+            if !item_interactions.blank?
+                last_approved_interaction = item_interactions.where(status: :approved).last
+                last_returned_interaction = item_interactions.where(status: :returned).last
+
+                if (last_approved_interaction.blank? && last_returned_interaction.blank?) ||
+                   (!last_returned_interaction.blank? &&
+                    last_returned_interaction.date > last_approved_interaction.date)
+                    #get all requests after returned date
+                    if !last_returned_interaction.blank?
+                        last_returned_date = last_returned_interaction.date
+                        pending_notifications.push(item_interactions.where("date > ?", last_returned_date))
+                    else
+                        pending_notifications.push(item_interactions)
+                    end
+                end
+            end
+        end
+        return pending_notifications
+    end
 end

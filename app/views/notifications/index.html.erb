@@ -1,9 +1,41 @@
 <div class="container-fluid mt-3">
     <h1>Notifications</h1>
-
+    <h2>Overdue</h2>
     <table>
-        <% if @approved_item_interactions %>
-            <% @approved_item_interactions.each do |interactions| %>
+        <% if @items_overdue %>
+            <% @items_overdue.each do |interaction| %>
+                <tr>
+                    <td>
+                        <%= "#{Item.find_by_id(interaction.item_id).name}" %> was due on
+                        <%= "#{interaction.end_date}" %>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+    <h2>Reminders</h2>
+    <table>
+        <% if @items_approaching_due_date %>
+            <% @items_approaching_due_date.each do |interaction| %>
+                <tr>
+                    <td>
+                        <%= "#{Item.find_by_id(interaction.item_id).name}" %> you borrowed is due
+                        <% if (Date.today - interaction.end_date).to_i == 0 %>
+                            today
+                        <% elsif (Date.today - interaction.end_date).to_i == 1 %>
+                            tomorrow
+                        <% else %>
+                            in <%= "#{(Date.today - interaction.end_date).to_i}" %> days
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+    <h2>Requests</h2>
+    <table>
+        <% if @pending_requests %>
+            <% @pending_requests.each do |interactions| %>
                 <% interactions.each do |interaction| %>
                 	<% interaction_person = Person.find(interaction.person_id) %>
                 	<% interaction_item   = Item.find(interaction.item_id) %>
