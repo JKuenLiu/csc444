@@ -72,5 +72,12 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+def setUpUserAndAuthenticate
+  @fake_user = double('user')
+  allow(request.env['warden']).to receive(:authenticate!).and_return(@fake_user)
+  allow(controller).to receive(:current_user).and_return(@fake_user)
+end
+
+
 require 'support/geocoder'
 require 'support/factory_bot'
