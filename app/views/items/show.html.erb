@@ -1,6 +1,6 @@
-<div class='container-fluid mt-5'>
+<div class='container-fluid'>
   <div class='row justify-content-center'>
-    <div class ='col-4'>
+    <div class ='col-sm-4 mt-4'>
       <% if !@item.photos.empty? %>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
@@ -35,11 +35,11 @@
           </a>
         </div>
       <% else %>
-        <%= image_tag('default_img.png', style:'width:100%', :class => 'dblock w-100') %>
+        <%= image_tag('default_img.png', style:'width:100%', :class => 'dblock w-100 rounded') %>
       <% end %>
     </div>
 
-    <div class = 'col-4'>
+    <div class='col-sm-4 mt-4'>
       <% if @interaction.errors.any? %>
         <div id="error_explanation">
           <h2>
@@ -55,13 +55,6 @@
       <% end %>
 
       <h1><%= @item.name %></h1>
-
-      <% if @person.items.include?(@item) %>
-        <%= link_to 'Edit Item', edit_item_path(@item) %>
-        <%= link_to 'Remove Item', [@item],
-                     method: :delete,
-                     data: { confirm: 'Are you sure?' } %>
-      <% end %>
 
       <h3>Lender</h3>
       <% if @item_owner.blank? %>
@@ -88,7 +81,8 @@
         <% @longitude = @item_owner.longitude %>
         <% puts "coordinates: ", @latitude, @longitude %>
       <% end %>
-      <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-s+ff6666(#{@longitude},#{@latitude})/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ" %>
+      <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-s+ff6666(#{@longitude},#{@latitude})/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ",
+          :class => "img-fluid rounded" %>
 
       <% if @valid_interaction %>
           <h3>Borrow Item</h3>
@@ -109,6 +103,12 @@
                 <%= form.submit 'Request Item', :class => 'btn btn-blue'%>
               </div>
           <% end %>
+      <% end %>
+      <% if @person.items.include?(@item) %>
+        <%= link_to 'Edit Item', edit_item_path(@item) %> |
+        <%= link_to 'Remove Item', [@item],
+                     method: :delete,
+                     data: { confirm: 'Are you sure?' } %>
       <% end %>
     </div>
   </div>

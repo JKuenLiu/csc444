@@ -10,11 +10,17 @@ class Item < ApplicationRecord
         if current_user.blank?
             return nil
         end
+        if current_user
+            person = Person.find_by_user_id(current_user.id)
+            if person.blank?
+                current_user.destroy
+                return nil
+            end
+        end
         cur_person_location = Person.find_by_user_id(current_user.id)
 
         other_person_location = Person.find_by_user_id(self.person_id)
         distance = cur_person_location.distance_to(other_person_location, :km)
-
         if distance.blank?
             return nil
         end
