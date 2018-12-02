@@ -9,6 +9,15 @@ class ApplicationController < ActionController::Base
 	end
 
 	def num_of_notifications
+        #if there is no person created yet we need to delete the user that is
+        #created
+        if current_user
+            person = Person.find_by_user_id(current_user.id)
+            if person.blank?
+                current_user.destroy
+                return
+            end
+        end
         @num_notifictions_str = nil
 		if user_signed_in?
             num_notifictions = get_number_of_notifications()
