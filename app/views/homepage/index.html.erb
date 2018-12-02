@@ -1,39 +1,36 @@
 <div class="container-fluid">
-  <p class="navbar-text pull-right">
-      <% if user_signed_in? %>
-        Logged in as <strong> <%= current_user.email %></strong>.
-      <% end %>
-  </p>
+    <div class="pt-4">
+       <%= form_tag(homepage_index_path, method: :get, :class => "form-inline my-2 my-lg-0") do %>
+         <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
+         <%= submit_tag 'Search', :class => "btn btn-blue my-2 my-sm-0"%>
+       <% end %>
+    </div>
 
-  <%= form_tag(homepage_index_path, method: :get, :class => "form-inline my-2 my-lg-0") do %>
-    <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
-    <%= submit_tag 'Search', :class => "btn btn-blue my-2 my-sm-0"%>
-  <% end %>
-
-  <div class="row mt-4">
     <% if @all_items %>
+        <div class="card-columns pt-4">
         <% @all_items.each_with_index do |item, index| %>
-            <div class="col-2 mb-3">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card border-0 mb-3">
+                    <img class="card-img-top img-responsive">
                         <% if !item.photos.empty? %>
-                            <%= image_tag(item.photos[0], style:'width:100%', :class => 'dblock w-100') %>
+                            <%= link_to image_tag(item.photos[0], style:'width:100%',
+                                :class => 'dblock w-100'), item_path(item) %>
                         <% else %>
-                            <%= image_tag('default_img.png', style:'width:100%', :class => 'dblock w-100') %>
+                            <%= link_to image_tag('default_img.png', style:'width:100%',
+                                :class => 'dblock w-100'), item_path(item) %>
                         <% end %>
-                        <div class="row justify-content-center">
-                          <%= link_to item.name, item_path(item) %>
-                        </div>
-                        <div class="row justify-content-center">
+                    </img>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                          <%= "#{item.name}" %>
+                        </h5>
+                        <p class="card-text" >
                           <% if item.get_item_distance(current_user) %>
                              <%= item.get_item_distance(current_user) %> km away
                           <% end %>
-                        </div>
+                        </p>
                     </div>
                 </div>
-            </div>
         <% end %>
+        </div>
     <% end %>
-  </div>
-  <%= link_to 'Add Item', new_item_path %>
 </div>

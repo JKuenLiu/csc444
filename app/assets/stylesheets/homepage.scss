@@ -4,6 +4,8 @@
 
 
 // ------------ search button color ----------- //
+@import "bootstrap";
+
 .btn-blue {
   color: #fff;
   background-color: #5E9BD1;
@@ -36,4 +38,7 @@
 .btn-blue:not(:disabled):not(.disabled):active:focus, .btn-blue:not(:disabled):not(.disabled).active:focus,
 .show > .btn-blue.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(94, 155, 209, 0.5);
+}
+
+.card-columns {
 }
