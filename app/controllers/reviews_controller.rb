@@ -16,6 +16,18 @@ class ReviewsController < ApplicationController
     # render plain: params[:review].inspect
     params = review_params
     @owner = Person.find(params[:person_id])
+
+    owner_rating = @owner.rating
+
+    if owner_rating
+      owner_rating += params[:rating].to_f
+      owner_rating /= 2.0
+    else
+      owner_rating = params[:rating]
+    end
+
+    @owner.update(:rating => owner_rating)
+
     @review = @owner.reviews.create(params.except(:person_id))
 
     if @review.errors.any?

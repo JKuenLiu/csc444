@@ -45,6 +45,15 @@
 							  <strong>Phone Number:</strong>
 							  <%= @person.phone %>
 							</p>
+                  <p>
+                    <strong>Community Rating:</strong>
+                    <% rating = @person.rating %>
+                    <% if rating %>
+                      <%= rating %>/5.0
+                    <% else %>
+                      <%= "No Ratings Yet" %>
+                    <% end %>
+                  </p>
 						</div>
 	        		</div>
 	        	</div>
@@ -64,6 +73,7 @@
   <!--                        Interaction.find(Review.find(@person.review_ids .first).interaction_id).person_id-->
                           <% reviewer = Person.find(Interaction.find(review.interaction_id).person_id) %>
                           <h6>Review by <%= reviewer.fname %> <%= reviewer.lname %> :</h6>
+                          <p><%= review.rating %>/5.0</p>
                           <p><%= review.comment %></p>
                         </div>
                       </div>

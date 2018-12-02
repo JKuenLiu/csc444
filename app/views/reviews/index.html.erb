@@ -11,7 +11,8 @@
             <div class="card-body">
               <div class="row justify-content-center">
                 <% reviewer = Person.find(Interaction.find(item.interaction_id).person_id) %>
-                <h6>Review by <%= reviewer.fname %> <%= reviewer.lname %>:</h6>
+                <h5>Review by <%= reviewer.fname %> <%= reviewer.lname %>:</h5>
+                <h6><%= @owner.rating %>/5.0</h6>
                 <p><%= item.comment %></p>
               </div>
             </div>
