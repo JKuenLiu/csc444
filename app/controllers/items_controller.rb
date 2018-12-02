@@ -28,6 +28,7 @@ class ItemsController < ApplicationController
         find_item_and_person
 
         if @item.update(item_params)
+            populateTagLinks
             redirect_to @item
         else
             render 'edit'

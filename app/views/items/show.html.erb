@@ -12,15 +12,15 @@
               <% end %>
             <% end %>
           </ol>
-          <div class="carousel-inner">
+          <div class="carousel-inner carousel-image-container rounded">
             <% @item.photos.each_with_index do |photo, i| %>
               <% if i == 0 %>
                 <div class="carousel-item active">
-                  <%= image_tag(photo, style:'width:100%', :class => 'dblock w-100') %>
+                  <%= image_tag(photo, style:'width:100%', :class => 'item-responsive') %>
                 </div>
               <% else %>
                 <div class="carousel-item">
-                  <%= image_tag(photo, style:'width:100%', :class => 'dblock w-100') %>
+                  <%= image_tag(photo, style:'width:100%', :class => 'item-responsive') %>
                 </div>
               <% end %>
             <% end %>
@@ -35,7 +35,7 @@
           </a>
         </div>
       <% else %>
-        <%= image_tag('default_img.png', style:'width:100%', :class => 'dblock w-100 rounded') %>
+        <%= image_tag('default_img.png', style:'width:100%', :class => 'item-responsive rounded') %>
       <% end %>
     </div>
 
