@@ -47,9 +47,9 @@
 							</p>
                   <p>
                     <strong>Community Rating:</strong>
-                    <% rating = @person.rating.round(2) %>
+                    <% rating = @person.rating %>
                     <% if rating %>
-                      <%= rating %>/5.0
+                      <%= rating.round(2) %>/5.0
                     <% else %>
                       <%= "No Ratings Yet" %>
                     <% end %>
