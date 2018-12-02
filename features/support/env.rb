@@ -59,6 +59,9 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 # Clean the database before and after each scenario
 Before do
   DatabaseCleaner.start
+
+  @testUser = FactoryBot.create(:user)
+
 end
 
 After do |scenario|
