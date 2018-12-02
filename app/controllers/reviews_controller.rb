@@ -20,8 +20,9 @@ class ReviewsController < ApplicationController
     owner_rating = @owner.rating
 
     if owner_rating
+      owner_rating *= @owner.reviews.count
       owner_rating += params[:rating].to_f
-      owner_rating /= 2.0
+      owner_rating /= @owner.reviews.count + 1
     else
       owner_rating = params[:rating]
     end
