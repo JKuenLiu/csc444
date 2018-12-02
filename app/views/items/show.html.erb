@@ -56,13 +56,6 @@
 
       <h1><%= @item.name %></h1>
 
-      <% if @person.items.include?(@item) %>
-        <%= link_to 'Edit Item', edit_item_path(@item) %>
-        <%= link_to 'Remove Item', [@item],
-                     method: :delete,
-                     data: { confirm: 'Are you sure?' } %>
-      <% end %>
-
       <h3>Lender</h3>
       <% if @item_owner.blank? %>
         <% @item_owner = Person.find_by_id(@item.person_id) %>
@@ -109,6 +102,12 @@
                 <%= form.submit 'Request Item', :class => 'btn btn-blue'%>
               </div>
           <% end %>
+      <% end %>
+      <% if @person.items.include?(@item) %>
+        <%= link_to 'Edit Item', edit_item_path(@item) %> |
+        <%= link_to 'Remove Item', [@item],
+                     method: :delete,
+                     data: { confirm: 'Are you sure?' } %>
       <% end %>
     </div>
   </div>

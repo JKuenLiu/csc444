@@ -43,6 +43,7 @@ class ItemsController < ApplicationController
         @valid_interaction = verify_interaction
         @interaction = Interaction.new
         @item_owner  = Person.find_by_id(@item.person_id)
+        @item_category = get_item_category(@item)
         @latitude, @longitude = get_item_location(@item_owner)
     end
 
@@ -79,6 +80,17 @@ class ItemsController < ApplicationController
     ##############################################
     private
 
+    def get_item_category(category)
+        if category == "1"
+            return "Accessories"
+        elsif category == "2"
+            return "Clothing"
+        elsif category == "3"
+            return "Electronics"
+        else
+            return "None"
+        end
+    end
 
     def find_item_and_person
         @person = Person.find_by_user_id(current_user.id)
@@ -158,6 +170,8 @@ class ItemsController < ApplicationController
     end
 
     def item_params
+        category = params[:item][:category]
+        params[:item][:category] = get_item_category(category)
         params.require(:item).permit(:name, :description, :start_date, :end_date, :category, photos: [])
     end
 
