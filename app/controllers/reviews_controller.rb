@@ -16,7 +16,7 @@ class ReviewsController < ApplicationController
     # render plain: params[:review].inspect
     params = review_params
     @owner = Person.find(params[:person_id])
-    @review = @owner.reviews.create(review_params)
+    @review = @owner.reviews.create(params.except(:person_id))
 
     if @review.errors.any?
       logger.debug "Error creating review ..."
