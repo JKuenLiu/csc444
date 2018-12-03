@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   skip_before_action :require_admin, only: [:new, :create]
 
   def index
-    @person = Person.find_by(params[:person_id])
+    @person = Person.find(params[:person_id])
     @reports = @person.reports
   end
 
