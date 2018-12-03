@@ -45,6 +45,8 @@
     <%= text_area_tag :tags, @item.tags.map{|tag| tag.name}.join(" "), :class => 'form-control', :row => '3' %>
   </div>
 
-  <%= form.submit 'Submit', :class => 'btn btn-blue'%>
+  <div class="row justify-content-center">
+    <%= form.submit 'Submit', :class => 'btn btn-blue'%>
+  </div>
 
 <% end %>
