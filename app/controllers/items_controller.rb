@@ -178,7 +178,7 @@ class ItemsController < ApplicationController
 
     def populateTagLinks
       @item.tags.clear
-      tagsList = params[:tags].split(",").map(&:strip) #split by commas and remove whitespaces
+      tagsList = params[:tags].split(/[\n ,]+/).map(&:strip) #split by commas and remove whitespaces
       tagsList.each do |item|
           curTag = Tag.find_by_name(item)
           if curTag == nil
