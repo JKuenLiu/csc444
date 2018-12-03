@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2018_12_03_200931) do
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "resolved", default: false
     t.index ["person_id"], name: "index_reports_on_person_id"
   end
 

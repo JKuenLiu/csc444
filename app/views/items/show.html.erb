@@ -80,8 +80,8 @@
         <% @latitude = @item_owner.latitude %>
         <% @longitude = @item_owner.longitude %>
       <% end %>
-      <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-s+ff6666(#{@longitude},#{@latitude})/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ",
-          :class => "img-fluid rounded" %>
+      <%= image_tag "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/#{@longitude},#{@latitude},15/400x150?access_token=pk.eyJ1IjoiaGV5aXRzcmlzYWFhYSIsImEiOiJjam96eTRqMWswMnI0M3FwaTMyZW9zbjJsIn0.5a2PnnqR8pKh1MaG3A6uxQ",
+          :class => "img-fluid rounded" %><br>
 
       <% if @valid_interaction %>
           <h3>Borrow Item</h3>
