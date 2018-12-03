@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 2018_12_03_051643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_id"
+    t.integer "reviewer"
     t.index ["interaction_id"], name: "index_reviews_on_interaction_id"
     t.index ["person_id"], name: "index_reviews_on_person_id"
   end

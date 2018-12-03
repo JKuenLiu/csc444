@@ -122,8 +122,13 @@ class InteractionsController < ApplicationController
         if @interaction.save
             logger.debug "Successful return"
             #@item.update(current_holder: "")
-
-            redirect_to new_person_review_url(@person, :interaction_id => @interaction.id, :item_id => @item.id)
+            subject = Person.find_by_id(@item.person_id)
+            redirect_to new_person_review_url(
+                @person,
+                :reviewer => @person,
+                :subject => subject,
+                :interaction_id => @interaction.id,
+                :item_id => @item.id)
         else
             logger.debug "Return failed"
             redirect_to @item
@@ -144,8 +149,14 @@ class InteractionsController < ApplicationController
         if @interaction.save
            logger.debug "item available success"
            @item.update(current_holder: "")
-           redirect_to notifications_url
-           #redirect_to new_person_review_url(@person, :interaction_id => @interaction.id, :item_id => @item.id)
+           #redirect_to notifications_url
+           subject = Person.find_by_id(person_id)
+           redirect_to new_person_review_url(
+               @person,
+               :reviewer => @person,
+               :subject => subject,
+               :interaction_id => @interaction.id,
+               :item_id => @item.id)
         else
            logger.debug "item available failed"
            redirect_to @item

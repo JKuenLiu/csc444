@@ -6,40 +6,36 @@ class ReviewsController < ApplicationController
 
   def new
     @review = Review.new
-    @person = Person.find(params[:person_id])
+    @reviewer = Person.find(params[:reviewer])
+    @subject = Person.find(params[:subject])
     @interaction = Interaction.find(params[:interaction_id])
-    @item = Item.find(params[:item_id])
-    @owner = Person.find(@item.person_id)
   end
 
   def create
     # render plain: params[:review].inspect
+    puts "parameters for creating a review", params
+    @subject = Person.find_by_id(params[:review][:subject_id])
     params = review_params
-    @owner = Person.find(params[:person_id])
+    # @owner = Person.find(params[:person_id])
+    #
+    subject_rating = @subject.rating
 
-    owner_rating = @owner.rating
-
-    if owner_rating
-      owner_rating *= @owner.reviews.count
-      owner_rating += params[:rating].to_f
-      owner_rating /= @owner.reviews.count + 1
+    if subject_rating
+      subject_rating *= @subject.reviews.count
+      subject_rating += params[:rating].to_f
+      subject_rating /= @subject.reviews.count + 1
     else
-      owner_rating = params[:rating]
+      subject_rating = params[:rating]
     end
 
-    @owner.update(:rating => owner_rating)
+    @subject.update(:rating => subject_rating)
 
-    @review = @owner.reviews.create(params.except(:person_id))
-
+    @review = @subject.reviews.create(params)
     if @review.errors.any?
       logger.debug "Error creating review ..."
-
       @review.errors.each {|s| logger.debug s}
-
     else
-
       logger.debug "Review successfully created ..."
-
     end
 
     redirect_to homepage_index_path
@@ -48,7 +44,12 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:comment, :rating, :interaction_id, :person_id)
+    params.require(:review).permit(
+        :comment,
+        :rating,
+        :interaction_id,
+        :reviewer,
+        :subject_id).except(:subject_id)
   end
 
 end

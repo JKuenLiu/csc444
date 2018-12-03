@@ -8,7 +8,7 @@
         <div class="col-sm-3">
           <div class="card border-0">
             <div class="card-body">
-              <% reviewer = Person.find(Interaction.find(item.interaction_id).person_id) %>
+              <% reviewer = Person.find(item.reviewer) %>
               <h5>Review by <%= reviewer.fname %> <%= reviewer.lname %>: <%= item.rating %>/5</h5>
               <p><%= item.comment %></p>
             </div>
