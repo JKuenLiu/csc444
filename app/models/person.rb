@@ -3,6 +3,7 @@ class Person < ApplicationRecord
     has_many :items, dependent: :destroy
     has_one_attached :avatar
     has_many :reviews
+    has_many :reports
 
     geocoded_by :address
     after_validation :geocode

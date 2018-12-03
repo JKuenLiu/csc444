@@ -1,0 +1,13 @@
+<%= form_for @report, url: {action: :create}, local: true do |form| %>
+
+
+  <div class='form-group'>
+    <%= form.label :complaint %><br>
+    <%= form.text_area :complaint, :class => 'form-control', :row => '3' %>
+  </div>
+
+  <%= form.hidden_field :reporter, :value => current_user.id %>
+  <%= form.hidden_field :person_id, :value => @person.id %>
+  <%= form.submit 'Submit', :class => 'btn btn-blue'%>
+
+<% end %>

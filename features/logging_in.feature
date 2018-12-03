@@ -19,7 +19,7 @@ Feature: Logging In
     Given I clear cookies
     And I go to the homepage
     And User clicks Log In
-    When User types credentials and clicks submit
+    When User types login credentials and clicks submit
     Then I should see signed in successfully
 
     

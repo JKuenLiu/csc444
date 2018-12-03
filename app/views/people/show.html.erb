@@ -56,6 +56,11 @@
 	        		</div>
                     <% if @is_current_user %>
                         <%= link_to 'Edit Profile', edit_person_path %>
+                    <% else %>
+                        <%= link_to 'Report This User', new_report_path(person_id: @person.id) %>
+                    <% end %>
+                    <% if current_user.admin %>
+                      <%= link_to 'View Reports', reports_path(person_id: @person.id) %>
                     <% end %>
 	        	</div>
 	        </div>
