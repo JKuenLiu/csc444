@@ -14,13 +14,15 @@ Rails.application.routes.draw do
   get 'homepage/terms'
 
   #Profile routes
-  # get 'profile', to: 'people#show'
+  # get 'profile', to: 'people#sow'
   # get 'profile/edit', to: 'people#edit'
   # put 'profile', to: 'people#update'
   # get 'profile/new', to: 'people#new'
   resources :people do
     resources :reviews, only:[:index, :new, :create]
   end
+
+  resources :reports, only:[:index, :new, :create, :show]
 
   #get 'item/index', to: 'item#index'
   #get 'item/show', to: 'item#show'
