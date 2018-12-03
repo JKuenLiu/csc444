@@ -5,7 +5,13 @@
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
        <%= form_tag(homepage_index_path, method: :get, :class => "form-inline my-2 my-lg-0") do %>
-         <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
+       <%= select_tag :category, options_for_select([['Accessories', 1], ['Books', 2], ['Clothing', 3],
+                                                     ['Electronics', 4], ['Home and Kitchen', 5],
+                                                     ['Luggages and Bags', 6], ['Office Products', 7],
+                                                     ['Sports and Outdoors', 8], ['Tools and Home Improvement', 9],
+                                                     ['Toys and Games', 10],['Other', 11]],  params[:category]),
+                      {:include_blank => "All", :class => "form-control mr-sm-2"} %>
+        <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
          <%= submit_tag 'Search', :class => "btn btn-blue my-2 my-sm-0"%>
        <% end %>
     </div>
