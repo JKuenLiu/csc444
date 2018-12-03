@@ -5,7 +5,7 @@
     <% if @item.errors.any? %>
       <% if @item.errors[:name] %>
         <% @item.errors[:name].each do |msg| %>
-          <small class="form-text text-danger">Name <%= msg %></small>
+          <small class="form-text text-error">Name <%= msg %></small>
         <% end %>
       <% end %>
     <% end %>
