@@ -1,92 +1,134 @@
 <div class="container-fluid mt-3">
-    <h1>Notifications</h1>
-    <h2>Overdue</h2>
-    <table>
-        <% if @items_overdue %>
-            <% @items_overdue.each do |interaction| %>
-                <tr>
-                    <td>
-                        <%= "#{Item.find_by_id(interaction.item_id).name}" %> was due on
-                        <%= "#{interaction.end_date}" %>
-                    </td>
-                </tr>
-            <% end %>
+    <h2>Your Notifications</h2>
+    <% if @items_overdue.count > 0 or @items_approaching_due_date.count > 0 or @pending_requests.count > 0 or @pending_returns.count > 0 %>
+        <% if @items_overdue.count > 0 %>
+            <h3>Overdue</h3>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <% @items_overdue.each do |interaction| %>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <% interaction_item = Item.find(interaction.item_id) %>
+                            <div class="col-2">
+                                <div class="row justify-content-end">
+                                    <b><%= interaction.date.localtime.to_formatted_s(:long_ordinal) %>:</b>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <%= interaction_item.name %> was due on <%= interaction_item.end_date %>
+                            </div>
+                        </div>
+                    </li>
+                <% end %>
+              </ul>
+            </div>
         <% end %>
-    </table>
-    <h2>Reminders</h2>
-    <table>
-        <% if @items_approaching_due_date %>
-            <% @items_approaching_due_date.each do |interaction| %>
-                <tr>
-                    <td>
-                        <%= "#{Item.find_by_id(interaction.item_id).name}" %> you borrowed is due
-                        <% if (Date.today - interaction.end_date).to_i == 0 %>
-                            today
-                        <% elsif (Date.today - interaction.end_date).to_i == 1 %>
-                            tomorrow
-                        <% else %>
-                            in <%= "#{(Date.today - interaction.end_date).to_i}" %> days
-                        <% end %>
-                    </td>
-                </tr>
-            <% end %>
+        
+        <% if @items_approaching_due_date.count > 0 %>
+            <h3>Reminders</h3>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <% @items_approaching_due_date.each do |interaction| %>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <% interaction_item = Item.find(interaction.item_id) %>
+                            <div class="col-2">
+                                <div class="row justify-content-end">
+                                    <b><%= interaction.date.localtime.to_formatted_s(:long_ordinal) %>:</b>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <%= "#{Item.find_by_id(interaction.item_id).name}" %> you borrowed is due
+                                <% if (Date.today - interaction.end_date).to_i == 0 %>
+                                    today
+                                <% elsif (Date.today - interaction.end_date).to_i == 1 %>
+                                    tomorrow
+                                <% else %>
+                                    in <%= "#{(Date.today - interaction.end_date).to_i}" %> days
+                                <% end %>
+                            </div>
+                        </div>
+                    </li>
+                <% end %>
+              </ul>
+            </div>
         <% end %>
-    </table>
-    <h2>Requests</h2>
-    <table>
-        <% if @pending_requests %>
-            <% @pending_requests.each do |interactions| %>
-                <% interactions.each do |interaction| %>
-                	<% interaction_person = Person.find(interaction.person_id) %>
-                	<% interaction_item   = Item.find(interaction.item_id) %>
-                    <tr>
-                		<td>
-                            <%= link_to "#{interaction_person.fname + " " + interaction_person.lname}",
-                                person_path(interaction_person) %>
-                            has requested to borrow your item <%= interaction_item.name %>
-                        </td>
-                		<td>
-                            <%= link_to 'Approve',
+
+        <% if @pending_requests.count > 0 %>
+            <h3>Requests</h3>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <% @pending_requests.each do |interactions| %>
+                    <% interactions.each do |interaction| %>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <% interaction_person = Person.find(interaction.person_id) %>
+                                <% interaction_item = Item.find(interaction.item_id) %>
+                                <div class="col-2">
+                                    <div class="row justify-content-end">
+                                        <b><%= interaction.date.localtime.to_formatted_s(:long_ordinal) %>:</b>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <%= link_to interaction_person.fullname,
+                                        person_path(interaction_person) %>
+                                    has requested to borrow your item <%= interaction_item.name %>
+                                    <%= link_to 'Approve',
+                                        {controller: :interactions,
+                                         action: :create,
+                                         item_id: interaction.item_id,
+                                         interaction: {
+                                             request_type: 1,
+                                             start_date: interaction.start_date,
+                                             end_date: interaction.end_date,
+                                             person_id: interaction.person_id}}, method: :post %>
+                                </div>
+                            </div>
+                        </li>
+                    <% end %>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+        
+        <% if @pending_returns.count > 0 %>
+            <h3>Returned</h3>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <% @pending_returns.each do |interaction| %>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <% interaction_person = Person.find(interaction.person_id) %>
+                            <% interaction_item = Item.find(interaction.item_id) %>
+                            <div class="col-2">
+                                <div class="row justify-content-end">
+                                    <b><%= interaction.date.localtime.to_formatted_s(:long_ordinal) %>:</b>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <%= link_to interaction_person.fullname,
+                                    person_path(interaction_person) %>
+                             <%= interaction_item.name %>
+                             has returned your item
+                             <%= link_to 'Confirm',
                                 {controller: :interactions,
                                  action: :create,
                                  item_id: interaction.item_id,
                                  interaction: {
-                                     request_type: 1,
+                                     request_type: 3,
                                      start_date: interaction.start_date,
                                      end_date: interaction.end_date,
                                      person_id: interaction.person_id}}, method: :post %>
-                        </td>
-                    </tr>
+                            </div>
+                        </div>
+                    </li>
                 <% end %>
-            <% end %>
+              </ul>
+            </div>
         <% end %>
-    </table>
-    <h2>Returned</h2>
-    <table>
-        <% if @pending_returns %>
-            <% @pending_returns.each do |interaction| %>
-            	<% interaction_person = Person.find(interaction.person_id) %>
-            	<% interaction_item   = Item.find(interaction.item_id) %>
-                <tr>
-            		<td>
-                        <%= link_to "#{interaction_person.fname + " " + interaction_person.lname}",
-                            person_path(interaction_person) %>
-                         <%= interaction_item.name %>
-                         has returned your item
-                    </td>
-            		<td>
-                        <%= link_to 'Confirm',
-                            {controller: :interactions,
-                             action: :create,
-                             item_id: interaction.item_id,
-                             interaction: {
-                                 request_type: 3,
-                                 start_date: interaction.start_date,
-                                 end_date: interaction.end_date,
-                                 person_id: interaction.person_id}}, method: :post %>
-                    </td>
-                </tr>
-            <% end %>
-        <% end %>
-    </table>
+    <% else %>
+        <div class="row justify-content-center">
+            <p>Looks like you have no notifications yet</p>
+        </div>
+    <% end %>
 </div>

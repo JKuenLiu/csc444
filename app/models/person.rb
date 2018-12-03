@@ -21,4 +21,8 @@ class Person < ApplicationRecord
     def address
         [street, city, province, country].compact.join(', ')
     end
+
+    def fullname
+        return fname + ' ' + lname
+    end
 end

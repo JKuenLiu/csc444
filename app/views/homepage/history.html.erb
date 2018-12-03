@@ -1,30 +1,47 @@
 <div class="container-fluid mt-3">
-    <h1>History</h1>
-
-    <table>
-        <% if @interactions.count > 0 %>
+    <h2>Your History</h2>
+    <% if @interactions.count > 0 %>
+        <div class="card">
+          <ul class="list-group list-group-flush">
             <% @interactions.each do |interaction| %>
-            	<% interaction_person = Person.find(interaction.person_id) %>
-            	<% interaction_item = Item.find(interaction.item_id) %>
-                <tr>
-                    <td><%= interaction.date %>:</td>
-                	<% if interaction.requested? %>
-                		<td><%= interaction_person.fname %> <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %></td>
-                	<% end %>
+                <li class="list-group-item">
+                    <div class="row">
+                        <% interaction_person = Person.find(interaction.person_id) %>
+                        <% interaction_item = Item.find(interaction.item_id) %>
+                        <div class="col-2">
+                            <div class="row justify-content-end">
+                                <b><%= interaction.date.localtime.to_formatted_s(:long_ordinal) %>:</b>
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <% if interaction.requested? %>
+                                <%= link_to interaction_person.fullname,
+                                        person_path(interaction_person) %> has requested to borrow your item <%= link_to interaction_item.name, item_path(interaction_item) %>
+                            <% end %>
 
-                    <% if interaction.approved? %>
-                        <td>You have approved <%= interaction_person.fname %> <%= interaction_person.lname %> to borrow your item <%= interaction_item.name %></td>
-                    <% end %>
+                            <% if interaction.approved? %>
+                                You have approved <%= link_to interaction_person.fullname,
+                                        person_path(interaction_person) %> to borrow your item <%= link_to interaction_item.name, item_path(interaction_item) %>
+                            <% end %>
 
-                    <% if interaction.returned? %>
-                        <td><%= interaction_person.fname %> <%= interaction_person.lname %> has returned your item <%= interaction_item.name %></td>
-                    <% end %>
+                            <% if interaction.returned? %>
+                                <%= link_to interaction_person.fullname,
+                                        person_path(interaction_person) %> has returned your item <%= link_to interaction_item.name, item_path(interaction_item) %>
+                            <% end %>
 
-                    <% if interaction.available? %>
-                        <td> successful transaction with <%= interaction_person.fname %> <%= interaction_person.lname %> </td>
-                    <% end %>
-                </tr>
+                            <% if interaction.available? %>
+                                successful transaction with <%= link_to interaction_person.fullname,
+                                        person_path(interaction_person) %>
+                            <% end %>
+                        </div>
+                    </div>
+                </li>
             <% end %>
-        <% end %>
-    </table>
+          </ul>
+        </div>
+    <% else %>
+        <div class="row justify-content-center">
+            <p>Looks like you have no history yet</p>
+        </div>
+    <% end %>
 </div>
