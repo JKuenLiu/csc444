@@ -105,9 +105,9 @@ class ItemsController < ApplicationController
         return last_approved_interaction
     end
 
-    def find_most_recent_return
+    def find_most_recent_available
         interaction_with_item = Interaction.where(item_id: @item.id).order("date")
-        interaction_with_item_returned = interaction_with_item.where(status: :returned)
+        interaction_with_item_returned = interaction_with_item.where(status: :available)
         if interaction_with_item_returned.count > 0
             last_returned_date = interaction_with_item_returned.last.date
             return last_returned_date
@@ -138,19 +138,23 @@ class ItemsController < ApplicationController
             interaction_with_item = Interaction.where(item_id: @item.id).order("date")
             if interaction_with_item.count > 0
                 cur_item = interaction_with_item.last
-                #if the item is returned, anyone can borrow the item again
-                if cur_item.returned?
+                #if the item is avaiable again, anyone can borrow the item again
+                if cur_item.available?
                     puts "-----------item is returned"
                     return true
                 #no one can request an item once it has been borrowed
                 elsif cur_item.approved?
                     puts "-----------item was approved"
                     return false
+
+                elsif cur_item.returned?
+                    puts "-----------item was approved"
+                    return false
                 #if the item is currently being requested, then you are only allowed
                 #one request per time the item is out
                 elsif cur_item.requested?
                     puts "-----------the item is requested"
-                    last_returned_date = find_most_recent_return
+                    last_returned_date = find_most_recent_available
                     if last_returned_date != nil
                         interactions_after_last_returned_date = interaction_with_item.where("date > ?", last_returned_date)
                         return is_a_double_request(interactions_after_last_returned_date)
@@ -158,10 +162,8 @@ class ItemsController < ApplicationController
                         puts "-----------not ever returned"
                         return is_a_double_request(interaction_with_item)
                     end
-                #something is fucked if this happens
                 else
                     puts "something is fucked!"
-                    #alert
                 end
             else
                 puts "-----no valid interactions"

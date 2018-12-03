@@ -1,7 +1,7 @@
 class Interaction < ApplicationRecord
 	# The person id is always the initial requestor
 	# Can get owner id via the item
-	enum status: [:requested, :approved, :returned]
+	enum status: [:requested, :approved, :returned, :available]
 
     belongs_to :item
 	  has_one :review

@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
 
     def get_number_of_notifications
         pending_requests = get_pending_requests()
+        pending_returns = get_pending_returns()
         items_approaching_due_date = items_due_within_time_period(3.days)
         items_overdue = get_items_overdue()
         total_notifications = 0
@@ -43,6 +44,9 @@ class ApplicationController < ActionController::Base
             pending_requests.each do |request|
                 total_notifications += request.count
             end
+        end
+        if !pending_returns.blank?
+            total_notifications += pending_returns.count
         end
         return total_notifications
     end
@@ -110,17 +114,52 @@ class ApplicationController < ActionController::Base
             if !item_interactions.blank?
                 last_approved_interaction = item_interactions.where(status: :approved).last
                 last_returned_interaction = item_interactions.where(status: :returned).last
+                last_available_interaction = item_interactions.where(status: :available).last
 
-                if (last_approved_interaction.blank? && last_returned_interaction.blank?) ||
-                   (!last_returned_interaction.blank? &&
-                    last_returned_interaction.date > last_approved_interaction.date)
+                no_interactions_for_item =
+                    last_approved_interaction.blank? &&
+                    last_returned_interaction.blank? &&
+                    last_available_interaction.blank?
+
+                if ( no_interactions_for_item ||
+                    (!last_available_interaction.blank? &&
+                     last_available_interaction.date > last_approved_interaction.date &&
+                     last_available_interaction.date > last_returned_interaction.date))
                     #get all requests after returned date
-                    if !last_returned_interaction.blank?
-                        last_returned_date = last_returned_interaction.date
+                    if !last_available_interaction.blank?
+                        last_returned_date = last_available_interaction.date
                         pending_notifications.push(item_interactions.where("date > ?", last_returned_date))
                     else
                         pending_notifications.push(item_interactions)
                     end
+                end
+            end
+        end
+        return pending_notifications
+    end
+
+    def get_pending_returns
+        person = Person.find_by_user_id(current_user.id)
+        items = person.items
+        if items.blank?
+            return nil
+        end
+        pending_notifications = []
+        items.each do |i|
+            item_interactions = Interaction.where(item_id: i.id).order("date")
+            if !item_interactions.blank?
+                last_approved_interaction = item_interactions.where(status: :approved).last
+                last_returned_interaction = item_interactions.where(status: :returned).last
+                last_available_interaction = item_interactions.where(status: :available).last
+
+                item_returned = !last_returned_interaction.blank?
+                item_available = !last_available_interaction.blank?
+
+                if (item_returned &&
+                    ((item_available && last_returned_interaction.date > last_available_interaction.date) ||
+                     (!item_available && last_returned_interaction.date > last_approved_interaction.date)))
+                    #get all requests after returned date
+                    pending_notifications.push(last_returned_interaction)
                 end
             end
         end

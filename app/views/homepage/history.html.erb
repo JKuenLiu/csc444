@@ -19,6 +19,10 @@
                     <% if interaction.returned? %>
                         <td><%= interaction_person.fname %> <%= interaction_person.lname %> has returned your item <%= interaction_item.name %></td>
                     <% end %>
+
+                    <% if interaction.available? %>
+                        <td> successful transaction with <%= interaction_person.fname %> <%= interaction_person.lname %> </td>
+                    <% end %>
                 </tr>
             <% end %>
         <% end %>

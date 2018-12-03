@@ -61,4 +61,32 @@
             <% end %>
         <% end %>
     </table>
+    <h2>Returned</h2>
+    <table>
+        <% if @pending_returns %>
+            <% @pending_returns.each do |interaction| %>
+            	<% interaction_person = Person.find(interaction.person_id) %>
+            	<% interaction_item   = Item.find(interaction.item_id) %>
+                <tr>
+            		<td>
+                        <%= link_to "#{interaction_person.fname + " " + interaction_person.lname}",
+                            person_path(interaction_person) %>
+                         <%= interaction_item.name %>
+                         has returned your item
+                    </td>
+            		<td>
+                        <%= link_to 'Confirm',
+                            {controller: :interactions,
+                             action: :create,
+                             item_id: interaction.item_id,
+                             interaction: {
+                                 request_type: 3,
+                                 start_date: interaction.start_date,
+                                 end_date: interaction.end_date,
+                                 person_id: interaction.person_id}}, method: :post %>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
 </div>

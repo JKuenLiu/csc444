@@ -27,6 +27,9 @@ class InteractionsController < ApplicationController
         elsif request_type == "2"
             logger.debug "Creating a return......"
             return_item
+        elsif request_type == "3"
+            logger.debug "Creating available......"
+            make_item_available
         end
     end
 
@@ -51,6 +54,13 @@ class InteractionsController < ApplicationController
         interaction_with_item_approved = interaction_with_item.where(status: :approved)
         last_approved_interaction = interaction_with_item_approved.last
         return last_approved_interaction
+    end
+
+    def find_most_recent_returned_interaction
+        interaction_with_item = Interaction.where(item_id: @item.id).order("date")
+        interaction_with_item_returned = interaction_with_item.where(status: :returned)
+        last_returned_interaction = interaction_with_item_returned.last
+        return last_returned_interaction
     end
 
     def request_item
@@ -111,12 +121,34 @@ class InteractionsController < ApplicationController
 
         if @interaction.save
             logger.debug "Successful return"
-            @item.update(current_holder: "")
+            #@item.update(current_holder: "")
 
-            redirect_to new_person_review_url(@person,  :interaction_id => @interaction.id, :item_id => @item.id)
+            redirect_to new_person_review_url(@person, :interaction_id => @interaction.id, :item_id => @item.id)
         else
             logger.debug "Return failed"
             redirect_to @item
+        end
+    end
+
+    def make_item_available
+        @item = Item.find(params[:item_id])
+        returned_interaction = find_most_recent_returned_interaction
+        start_date = returned_interaction.start_date
+        end_date = returned_interaction.end_date
+        person_id = returned_interaction.person_id
+        interaction_params = {:person_id => person_id, :date => DateTime.now,
+                              :status => :available, :start_date => start_date,
+                              :end_date => end_date}
+        @interaction = @item.interactions.create(interaction_params)
+
+        if @interaction.save
+           logger.debug "item available success"
+           @item.update(current_holder: "")
+           redirect_to notifications_url
+           #redirect_to new_person_review_url(@person, :interaction_id => @interaction.id, :item_id => @item.id)
+        else
+           logger.debug "item available failed"
+           redirect_to @item
         end
     end
 
