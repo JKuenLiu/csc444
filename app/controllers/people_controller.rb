@@ -1,5 +1,6 @@
 class PeopleController < ApplicationController
-  skip_before_action :require_login, :num_of_notifications
+  skip_before_action :require_login
+  skip_before_action :num_of_notifications, only: [:new, :create]
 
   def new
       @person = Person.new
