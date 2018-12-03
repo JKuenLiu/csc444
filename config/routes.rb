@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     resources :reviews, only:[:index, :new, :create]
   end
 
-  resources :reports, only:[:index, :new, :create, :show]
+  resources :reports
+  # , only:[:index, :new, :create, :show, :update]
 
   #get 'item/index', to: 'item#index'
   #get 'item/show', to: 'item#show'

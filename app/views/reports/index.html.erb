@@ -3,14 +3,20 @@
 
   <div class="row">
     <% if @reports %>
-      <% @reports.each do |report| %>
+      <% @reports.reverse.each do |report| %>
         <div class="col-2 mb-3">
           <div class="card">
-            <div class="card-body">
+            <div class=<%=report.resolved ? "card-body text-success" : "card-body text-danger" %>>
               <div class="row justify-content-center">
                 <% reporter = Person.find(report.reporter) %>
                 <h5>Report by <%= reporter.fname %> <%= reporter.lname %>:</h5>
                 <p><%= report.complaint %></p>
+                <% if !report.resolved %>
+                  <%= form_for report, url: {action: :update, id: report.id}, local: true do |form| %>
+                      <%= form.hidden_field :resolved, :value => true%>
+                      <%= form.submit 'Resolve', :class => 'btn btn-blue'%>
+                  <% end %>
+                <% end %>
               </div>
             </div>
           </div>
@@ -18,4 +24,57 @@
       <% end %>
     <% end %>
   </div>
+
+<!--  <div class="row">-->
+    <%# if @reports %>
+      <%# @reports.each do |report| %>
+<!--        <div class="col-2 mb-3">-->
+<!--          <div class="card">-->
+<!--            <div class="card-body">-->
+<!--              <div class="row justify-content-center">-->
+                <%# reporter = Person.find(report.reporter) %>
+<!--                <h5>Report by <%#= reporter.fname %> <%#= reporter.lname %>:</h5>-->
+<!--                <p><%#= report.complaint %></p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      <%# end %>
+    <%# end %>
+<!--  </div>-->
+
+<!--  <div class="card text-center">-->
+<!--    <div class="card-header">-->
+<!--      <ul class="nav nav-tabs card-header-tabs">-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link active" href="#">Active</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Resolved</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--      <div class="row">-->
+        <%# if @reports %>
+          <%# @reports.reverse.each do |report| %>
+<!--            <div class="col-2 mb-3">-->
+<!--              <div class="card">-->
+<!--                <div class=<%#=report.resolved ? "card-body text-success" : "card-body text-danger" %>>-->
+<!--                  <div class="row justify-content-center">-->
+                    <%# reporter = Person.find(report.reporter) %>
+<!--                    <h5>Report by <%#= reporter.fname %> <%#= reporter.lname %>:</h5>-->
+<!--                    <p><%#= report.complaint %></p>-->
+<!--                    <a href="#" class="btn btn-primary">Go somewhere</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+          <%# end %>
+        <%# end %>
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
 </div>
