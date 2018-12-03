@@ -26,7 +26,7 @@ class ItemsController < ApplicationController
 
     def update
         find_item_and_person
-
+        @item.photos.purge
         if @item.update(item_params)
             populateTagLinks
             redirect_to @item

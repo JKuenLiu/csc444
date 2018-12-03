@@ -7,7 +7,7 @@
             	<% interaction_person = Person.find(interaction.person_id) %>
             	<% interaction_item = Item.find(interaction.item_id) %>
                 <tr>
-                    <td><%= interaction.date %></td>
+                    <td><%= interaction.date %>:</td>
                 	<% if interaction.requested? %>
                 		<td><%= interaction_person.fname %> <%= interaction_person.lname %> has requested to borrow your item <%= interaction_item.name %></td>
                 	<% end %>
