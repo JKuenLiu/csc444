@@ -12,6 +12,8 @@ class HomepageController < ApplicationController
          else
              @all_items = Item.all
          end
+         # @five_star_reviews = find_five_star_reviews
+         # @five_star_review_users = get_five_star_review_users
     end
 
     def history
@@ -20,45 +22,31 @@ class HomepageController < ApplicationController
         @interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
     end
 
-
-    # def notifications
-    #     @person = Person.find_by_user_id(current_user.id)
-    #     @items = @person.items
-    #     #@interactions = Interaction.where(item_id: @items.map(&:id)).order(date: :desc)
-    #     @item_interactions = get_pending_requests
-    #     @interaction = get_pending_notifications
-    # end
-
     ##############################################
     ##############PRIVATE FUNCTIONS###############
     ##############################################
     private
-
-    # def get_pending_requests
-    #     if @items.blank?
+    # def find_five_star_reviews
+    #     five_star_reviews = Review.where(rating: 5.0).last(3)
+    #     if five_star_reviews.blank?
     #         return nil
+    #     else
+    #         return five_star_reviews
     #     end
-    #     #last_approved_interactions = []
-    #     pending_notifications      = []
-    #     @items.each do |i|
-    #         item_interactions = Interaction.where(item_id: i.id).order("date")
-    #         if !item_interactions.blank?
-    #             last_approved_interaction = item_interactions.where(status: :approved).last
-    #             last_returned_interaction = item_interactions.where(status: :returned).last
+    # end
     #
-    #             if (last_approved_interaction.blank? && last_returned_interaction.blank?) ||
-    #                (!last_returned_interaction.blank? &&
-    #                 last_returned_interaction.date > last_approved_interaction.date)
-    #                 #get all requests after returned date
-    #                 if !last_returned_interaction.blank?
-    #                     last_returned_date = last_returned_interaction.date
-    #                     pending_notifications.push(item_interactions.where("date > ?", last_returned_date))
-    #                 else
-    #                     pending_notifications.push(item_interactions)
-    #                 end
-    #             end
+    # def get_five_star_review_users
+    #     five_star_reviews = find_five_star_reviews
+    #     reviewers = []
+    #     if five_star_reviews.blank?
+    #         return nil
+    #     else
+    #         five_star_reviews.each do |review|
+    #             interaction = Interaction.find_by_id(review.interaction_id)
+    #             person = Person.find_by_id(interaction.person_id)
+    #             reviewers.push(person)
     #         end
+    #         return reviewers
     #     end
-    #     return pending_notifications
     # end
 end

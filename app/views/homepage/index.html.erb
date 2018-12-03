@@ -1,5 +1,9 @@
-<div class="container-fluid">
-    <div class="pt-4">
+<% if !current_user %>
+    <%= render "landing" %>
+<% end %>
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
        <%= form_tag(homepage_index_path, method: :get, :class => "form-inline my-2 my-lg-0") do %>
          <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
          <%= submit_tag 'Search', :class => "btn btn-blue my-2 my-sm-0"%>
