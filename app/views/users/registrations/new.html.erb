@@ -5,24 +5,29 @@
         <div class="card-body">
           <h2>Sign up</h2>
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-            <%= devise_error_messages! %>
 
             <div class="field form-group">
-              <%= f.label :email %><br />
+              <%= f.label :email %>
               <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => 'form-control' %>
+              <% resource.errors[:email].each do |msg| %>
+                  <small class="form-text text-error">Email <%= msg %></small>
+                <% end %>
             </div>
 
             <div class="field form-group">
-              <%= f.label :password %>
-              <% if @minimum_password_length %>
-              <em>(<%= @minimum_password_length %> characters minimum)</em>
-              <% end %><br />
+              <%= f.label :password %><i> (<%= @minimum_password_length %> characters minimum)</i>
               <%= f.password_field :password, autocomplete: "new-password", :class => 'form-control' %>
+              <% resource.errors[:password].each do |msg| %>
+                  <small class="form-text text-error">Password <%= msg %></small>
+                <% end %>
             </div>
 
             <div class="field form-group">
-              <%= f.label :password_confirmation %><br />
+              <%= f.label :password_confirmation %>
               <%= f.password_field :password_confirmation, autocomplete: "new-password", :class => 'form-control' %>
+              <% resource.errors[:password_confirmation].each do |msg| %>
+                  <small class="form-text text-error">Password Confirmation <%= msg %></small>
+                <% end %>
             </div>
 
             <div class="actions row justify-content-center">
