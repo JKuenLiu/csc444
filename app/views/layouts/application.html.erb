@@ -30,39 +30,41 @@
         <% @person = Person.find_by_user_id(current_user.id) %>
       <% end %>
       <% if user_signed_in? and !@person.blank? %>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class='nav-item dropdown'>
-              <%= link_to @person.fname + " " + @person.lname, person_path(@person), :class => 'nav-link dropdown-toggle', :id => 'navbarDropdown', :role => 'button', 'data-toggle'=>  'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' => 'false' %>
-              <div class="dropdown-menu" aria-labelledby='navbarDropdown'>
-                <%= link_to 'View Profile', person_path(@person), :class => 'dropdown-item'%>
-                <%= link_to 'Edit Profile', edit_person_path(@person), :class => 'dropdown-item' %>
-                <%= link_to 'Account Settings', edit_user_registration_path, :class => 'dropdown-item' %>
-                <div class="dropdown-divider"></div>
-                <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'dropdown-item' %>
-              </div>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Lend an Item", new_item_path, :class => 'nav-link' %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Your Items", items_path(:your_items => 'true'), :class => 'nav-link' %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Borrowed Items", items_path(:your_items => 'false'), :class => 'nav-link' %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'History', homepage_history_path, :class => 'nav-link' %>
-            </li>
-            <li class="nav-item">
-              <% if @num_notifictions_str %>
-                <%= link_to 'Notifications (' + @num_notifictions_str + ')',  notifications_url, :class => 'nav-link' %>
-              <% else %>
-                <%= link_to 'Notifications',  notifications_url, :class => 'nav-link' %>
-              <% end %>
-            </li>
-          </ul>
-        </div>
+        <% if !current_user.locked %>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class='nav-item dropdown'>
+                <%= link_to @person.fname + " " + @person.lname, person_path(@person), :class => 'nav-link dropdown-toggle', :id => 'navbarDropdown', :role => 'button', 'data-toggle'=>  'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' => 'false' %>
+                <div class="dropdown-menu" aria-labelledby='navbarDropdown'>
+                  <%= link_to 'View Profile', person_path(@person), :class => 'dropdown-item'%>
+                  <%= link_to 'Edit Profile', edit_person_path(@person), :class => 'dropdown-item' %>
+                  <%= link_to 'Account Settings', edit_user_registration_path, :class => 'dropdown-item' %>
+                  <div class="dropdown-divider"></div>
+                  <%= link_to 'Logout', destroy_user_session_path, method: :delete, :class=> 'dropdown-item' %>
+                </div>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Lend an Item", new_item_path, :class => 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Your Items", items_path(:your_items => 'true'), :class => 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Borrowed Items", items_path(:your_items => 'false'), :class => 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'History', homepage_history_path, :class => 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <% if @num_notifictions_str %>
+                  <%= link_to 'Notifications (' + @num_notifictions_str + ')',  notifications_url, :class => 'nav-link' %>
+                <% else %>
+                  <%= link_to 'Notifications',  notifications_url, :class => 'nav-link' %>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
       <% else %>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -82,7 +84,7 @@
 
     <!-- footer start -->
     <hr class="my-4">
-    <div class="contianer-fluid">
+    <div class="container-fluid">
       <!-- Button trigger modal -->
       <div class='footer-container row justify-content-around pb-5'>
         <button type="button" class="footer" data-toggle="modal" data-target="#about_modal">

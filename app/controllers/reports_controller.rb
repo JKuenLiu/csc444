@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
 
   def index
     @person = Person.find(params[:person_id])
+    @user = User.find(@person.user_id)
     @reports = @person.reports
   end
 

@@ -22,6 +22,13 @@ class HomepageController < ApplicationController
              puts "Catergory: " + categories[params[:category].to_i] + " " + params[:category]
              @all_items = @all_items.select{|item|item.category == categories[params[:category].to_i]}
          end
+
+        if current_user
+            if current_user.locked
+                render "locked"
+            end
+        end
+
          # @five_star_reviews = find_five_star_reviews
          # @five_star_review_users = get_five_star_review_users
     end
