@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_02_172358) do
+ActiveRecord::Schema.define(version: 2018_12_03_200931) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2018_12_02_172358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_id"
+    t.integer "reviewer"
     t.index ["interaction_id"], name: "index_reviews_on_interaction_id"
     t.index ["person_id"], name: "index_reviews_on_person_id"
   end

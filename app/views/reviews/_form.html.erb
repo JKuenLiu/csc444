@@ -15,7 +15,8 @@
   </div>
 
   <%= form.hidden_field :interaction_id, :value => @interaction.id %>
-  <%= form.hidden_field :person_id, :value => @owner.id %>
+  <%= form.hidden_field :subject_id, :value => @subject.id %>
+  <%= form.hidden_field :reviewer, :value => @reviewer.id %>
   <%= form.submit 'Submit', :class => 'btn btn-blue'%>
 
 <% end %>

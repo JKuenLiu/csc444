@@ -73,7 +73,7 @@
                     <div class="card border-0">
                       <div class="card-body">
     <!--                        Interaction.find(Review.find(@person.review_ids .first).interaction_id).person_id-->
-                          <% reviewer = Person.find(Interaction.find(review.interaction_id).person_id) %>
+                          <% reviewer = Person.find(review.reviewer) %>
                           <h6>Review by <%= reviewer.fname %> <%= reviewer.lname %>: <%= review.rating %>/5 </h6>
                           <p><%= review.comment %></p>
                       </div>
