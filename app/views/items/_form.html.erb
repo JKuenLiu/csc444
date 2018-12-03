@@ -42,7 +42,7 @@
 
   <div class='form-group'>
     <%= form.label :tags %><br>
-    <%= text_area_tag :tags, '', :class => 'form-control', :row => '3' %>
+    <%= text_area_tag :tags, @item.tags.map{|tag| tag.name}.join(" "), :class => 'form-control', :row => '3' %>
   </div>
 
   <%= form.submit 'Submit', :class => 'btn btn-blue'%>

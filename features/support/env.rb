@@ -60,7 +60,7 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 Before do
   DatabaseCleaner.start
 
-  @testUser = FactoryBot.create(:user)
+  @testPerson = FactoryBot.create(:person)
 
 end
 

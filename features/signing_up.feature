@@ -1,8 +1,8 @@
 # feature/hello_lndr.feature
 
-Feature: Logging In
+Feature: Signing up
   As a product manager
-  I want to see that a user can log in
+  I want to see that a user can sign up.
 
   Scenario:
     Given I clear cookies
@@ -28,6 +28,7 @@ Feature: Logging In
     And User clicks sign up
     And User types sign up credentials and clicks submit
     When User fills in personal information and clicks submit
-    Then I should expect person John Doe to exist
+    Then I should see Lend an Item link
+    #Then I should expect person John Doe to exist
 
     
