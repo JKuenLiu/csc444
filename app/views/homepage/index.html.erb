@@ -2,39 +2,48 @@
     <%= render "landing" %>
 <% end %>
 
-<div class="container-fluid mt-4">
+
+  <div class="container-fluid mt-4">
     <div class="row justify-content-center">
        <%= form_tag(homepage_index_path, method: :get, :class => "form-inline my-2 my-lg-0") do %>
-         <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
+       <%= select_tag :category, options_for_select([['Accessories', 1], ['Books', 2], ['Clothing', 3],
+                                                     ['Electronics', 4], ['Home and Kitchen', 5],
+                                                     ['Luggages and Bags', 6], ['Office Products', 7],
+                                                     ['Sports and Outdoors', 8], ['Tools and Home Improvement', 9],
+                                                     ['Toys and Games', 10],['Other', 11]],  params[:category]),
+                      {:include_blank => "All", :class => "form-control mr-sm-2"} %>
+        <%= text_field_tag :term, params[:term], :class => "form-control mr-sm-2" %>
          <%= submit_tag 'Search', :class => "btn btn-blue my-2 my-sm-0"%>
        <% end %>
     </div>
 
     <% if @all_items %>
-        <div class="card-columns pt-4">
+      <div class="card-columns pt-4">
         <% @all_items.each_with_index do |item, index| %>
-                <div class="card border-0 mb-3">
-                    <img class="card-img-top img-responsive">
-                        <% if !item.photos.empty? %>
-                            <%= link_to image_tag(item.photos[0], style:'width:100%',
-                                :class => 'dblock w-100 rounded'), item_path(item) %>
-                        <% else %>
-                            <%= link_to image_tag('default_img.png', style:'width:100%',
-                                :class => 'dblock w-100 rounded'), item_path(item) %>
-                        <% end %>
-                    </img>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                          <%= "#{item.name}" %>
-                        </h5>
-                        <p class="card-text" >
-                          <% if item.get_item_distance(current_user) %>
-                             <%= item.get_item_distance(current_user) %> km away
-                          <% end %>
-                        </p>
-                    </div>
-                </div>
+          <div class="card border-0 mb-3">
+            <img class="card-img-top img-responsive">
+              <% if !item.photos.empty? %>
+                <%= link_to image_tag(item.photos[0], style:'width:100%',
+                                      :class => 'dblock w-100 rounded'), item_path(item) %>
+              <% else %>
+                <%= link_to image_tag('default_img.png', style:'width:100%',
+                                      :class => 'dblock w-100 rounded'), item_path(item) %>
+              <% end %>
+            </img>
+            <div class="card-body">
+              <h5 class="card-title">
+                <%= "#{item.name}" %>
+              </h5>
+              <p class="card-text" >
+                <% if item.get_item_distance(current_user) %>
+                  <%= item.get_item_distance(current_user) %> km away
+                <% end %>
+              </p>
+            </div>
+          </div>
         <% end %>
-        </div>
+      </div>
     <% end %>
-</div>
+  </div>
+
+

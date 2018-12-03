@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'users/update'
   get 'homepage/index'
 
   get 'homepage/history'
@@ -40,6 +41,8 @@ Rails.application.routes.draw do
 
   root 'homepage#index'
   devise_for :users, controllers: {registrations: 'users/registrations',sessions: 'users/sessions'}
+
+  resources :users, only:[:update, :patch]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   #
   # As a note, you can create resources with 'only' to create only some of the routes

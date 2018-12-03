@@ -1,0 +1,13 @@
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h3>Your account has been locked by a LNDR admin!</h3>
+          <h5>Please email admin@lndr.com to resolve the issue.</h5>
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

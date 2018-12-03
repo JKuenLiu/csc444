@@ -3,6 +3,11 @@ class HomepageController < ApplicationController
     before_action :require_login, only: [:notifications, :history]
 
     def index
+
+        categories = ['All','Accessories', 'Books', 'Clothing', 'Electronics',
+         'Home and Kitchen', 'Luggages and Bags', 'Office Products',
+         'Sports and Outdoors', 'Tools and Home Improvement',
+         'Toys and Games', 'Other']
         @all_items = Array.new
          if params[:term]
              @all_items = Item.where('name LIKE ?', "%#{params[:term]}%")
@@ -12,6 +17,18 @@ class HomepageController < ApplicationController
          else
              @all_items = Item.all
          end
+
+         if params[:category] && params[:category] != ""
+             puts "Catergory: " + categories[params[:category].to_i] + " " + params[:category]
+             @all_items = @all_items.select{|item|item.category == categories[params[:category].to_i]}
+         end
+
+        if current_user
+            if current_user.locked
+                render "locked"
+            end
+        end
+
          # @five_star_reviews = find_five_star_reviews
          # @five_star_review_users = get_five_star_review_users
     end
