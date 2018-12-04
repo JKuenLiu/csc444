@@ -8,6 +8,13 @@ class UsersController < ApplicationController
     redirect_to reports_path(:person_id => @person.id)
   end
 
+  def destroy
+      @user = User.find(params[:id])
+      if @user.destroy
+          redirect_to root_url, notice: "User deleted."
+      end
+  end
+
   def review_params
     params.require(:user).permit(:locked)
   end
