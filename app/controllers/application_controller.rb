@@ -38,16 +38,12 @@ class ApplicationController < ActionController::Base
 
         total_notifications =
             items_overdue.count +
-            items_approaching_due_date.count
+            items_approaching_due_date.count +
+            pending_returns.count
 
-        if !pending_requests.blank?
             pending_requests.each do |request|
                 total_notifications += request.count
             end
-        end
-        if !pending_returns.blank?
-            total_notifications += pending_returns.count
-        end
         return total_notifications
     end
 
@@ -105,7 +101,7 @@ class ApplicationController < ActionController::Base
         person = Person.find_by_user_id(current_user.id)
         items = person.items
         if items.blank?
-            return nil
+            return []
         end
         #last_approved_interactions = []
         pending_notifications      = []
@@ -142,12 +138,12 @@ class ApplicationController < ActionController::Base
         person = Person.find_by_user_id(current_user.id)
         items = person.items
         if items.blank?
-            return nil
+            return []
         end
         pending_notifications = []
         items.each do |i|
             item_interactions = Interaction.where(item_id: i.id).order("date")
-            if !item_interactions.blank?
+            if !item_interactions.blank? and !item_interactions.last.failed?
                 last_approved_interaction = item_interactions.where(status: :approved).last
                 last_returned_interaction = item_interactions.where(status: :returned).last
                 last_available_interaction = item_interactions.where(status: :available).last

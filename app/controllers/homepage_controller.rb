@@ -23,6 +23,11 @@ class HomepageController < ApplicationController
              @all_items = @all_items.select{|item|item.category == categories[params[:category].to_i]}
          end
 
+         #remove items that have been reported as stolen
+         puts "number of interactions", Interaction.count
+         @all_items = @all_items.select{
+             |item| item.interactions.last.blank? || !item.interactions.last.failed? }
+
         if current_user
             if current_user.locked
                 render "locked"

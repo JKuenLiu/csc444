@@ -30,6 +30,9 @@ class InteractionsController < ApplicationController
         elsif request_type == "3"
             logger.debug "Creating available......"
             make_item_available
+        elsif request_type == "4"
+            logger.debug "Creating automatic interaction for stolen items"
+            make_item_stolen
         end
     end
 
@@ -163,4 +166,33 @@ class InteractionsController < ApplicationController
         end
     end
 
+    def make_item_stolen
+        @item = Item.find(params[:item_id])
+        returned_interaction = find_most_recent_returned_interaction
+        start_date = returned_interaction.start_date
+        end_date = returned_interaction.end_date
+        person_id = returned_interaction.person_id
+        interaction_params = {:person_id => person_id, :date => DateTime.now,
+                              :status => :failed, :start_date => start_date,
+                              :end_date => end_date}
+        @interaction = @item.interactions.create(interaction_params)
+        @item.update(current_holder: "")
+        #puts "---------------------redirecting to a report!!!", interaction_params
+        redirect_to new_report_path(person_id: person_id)
+        # if @interaction.save
+        #    logger.debug "item failed success"
+        #    @item.update(current_holder: "")
+        #    #redirect_to notifications_url
+        #    subject = Person.find_by_id(person_id)
+        #    redirect_to new_person_review_url(
+        #        @person,
+        #        :reviewer => @person,
+        #        :subject => subject,
+        #        :interaction_id => @interaction.id,
+        #        :item_id => @item.id)
+        # else
+        #    logger.debug "item available failed"
+        #    redirect_to @item
+        # end
+    end
 end

@@ -23,7 +23,7 @@
               </ul>
             </div>
         <% end %>
-        
+
         <% if @items_approaching_due_date.count > 0 %>
             <h3>Reminders</h3>
             <div class="card">
@@ -90,7 +90,7 @@
               </ul>
             </div>
         <% end %>
-        
+
         <% if @pending_returns.count > 0 %>
             <h3>Returned</h3>
             <div class="card">
@@ -118,7 +118,17 @@
                                      request_type: 3,
                                      start_date: interaction.start_date,
                                      end_date: interaction.end_date,
-                                     person_id: interaction.person_id}}, method: :post %>
+                                     person_id: interaction.person_id}}, method: :post %> |
+                             <%= link_to 'Report stolen',
+                                 {controller: :interactions,
+                                  action: :create,
+                                  item_id: interaction.item_id,
+                                  interaction: {
+                                      request_type: 4,
+                                      start_date: interaction.start_date,
+                                      end_date: interaction.end_date,
+                                      person_id: interaction.person_id}}, method: :post,
+                                      data: { confirm: "Are you sure you want report the item as stolen?"} %>
                             </div>
                         </div>
                     </li>
