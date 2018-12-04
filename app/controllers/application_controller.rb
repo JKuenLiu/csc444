@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 	before_action :require_login, :num_of_notifications
-
+    #application controller
 	private
 	def require_login
 		unless current_user
