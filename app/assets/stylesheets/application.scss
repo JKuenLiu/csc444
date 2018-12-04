@@ -46,13 +46,13 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 300px;
+  margin-bottom: 275px;
 }
 .sticky-footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 300px;
+  height: 275px;
   line-height: 60px; /* Vertically center the text there */
 }
