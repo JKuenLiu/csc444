@@ -1,6 +1,6 @@
 class Item < ApplicationRecord
     belongs_to :person
-    has_many :interactions, dependent: :destroy
+    has_many :interactions, dependent: :destory
     has_many_attached :photos
     has_and_belongs_to_many :tags
 
