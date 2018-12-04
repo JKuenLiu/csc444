@@ -1,4 +1,4 @@
-<%= form_with model: @item, :html => { :multipart => true }, local: true do |form| %>
+<%= form_with model: @item, local: true do |form| %>
   <div class='form-group'>
     <%= form.label :name %><br>
     <%= form.text_field :name, :class => 'form-control' %>
@@ -25,8 +25,8 @@
   </div>
 
   <div class='form-group'>
-    <%= form.label :pictures, class: "control-label" %><br>
-    <%= file_field_tag "images[]", type: :file, multiple: true %>
+    <%= form.label :photos %><br>
+    <%= form.file_field :photos, multiple: true, :class => 'form-control-file'%>
   </div>
 
   <div class='form-group'>

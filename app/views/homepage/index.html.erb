@@ -22,8 +22,8 @@
         <% @all_items.each_with_index do |item, index| %>
           <div class="card border-0 mb-3">
             <img class="card-img-top img-responsive">
-              <% if !item.pictures.empty? %>
-                <%= link_to image_tag(item.pictures[0].image.url, style:'width:100%',
+              <% if !item.photos.empty? %>
+                <%= link_to image_tag(item.photos[0], style:'width:100%',
                                       :class => 'dblock w-100 rounded'), item_path(item) %>
               <% else %>
                 <%= link_to image_tag('default_img.png', style:'width:100%',
