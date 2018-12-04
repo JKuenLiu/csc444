@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
 	        end
 	    end
 
-	    return remind_items
+        return remind_items
 	end
 
     def get_items_overdue
@@ -98,14 +98,14 @@ class ApplicationController < ActionController::Base
 	        end
 	    end
 
-	    return overdue_items
+        return overdue_items
     end
 
     def get_pending_requests
         person = Person.find_by_user_id(current_user.id)
         items = person.items
         if items.blank?
-            return nil
+            return []
         end
         #last_approved_interactions = []
         pending_notifications      = []
@@ -135,6 +135,7 @@ class ApplicationController < ActionController::Base
                 end
             end
         end
+
         return pending_notifications
     end
 
@@ -142,7 +143,7 @@ class ApplicationController < ActionController::Base
         person = Person.find_by_user_id(current_user.id)
         items = person.items
         if items.blank?
-            return nil
+            return []
         end
         pending_notifications = []
         items.each do |i|
@@ -163,6 +164,7 @@ class ApplicationController < ActionController::Base
                 end
             end
         end
+
         return pending_notifications
     end
 end
