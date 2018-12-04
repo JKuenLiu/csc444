@@ -1,9 +1,9 @@
 class Person < ApplicationRecord
     belongs_to :user, optional: true
-    has_many :items, dependent: :destory
+    has_many :items, dependent: :destroy
     has_one_attached :avatar
-    has_many :reviews, dependent: :destory
-    has_many :reports, dependent: :destory
+    has_many :reviews, dependent: :destroy
+    has_many :reports, dependent: :destroy
 
     geocoded_by :address
     after_validation :geocode
