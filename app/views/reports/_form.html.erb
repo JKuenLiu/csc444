@@ -6,7 +6,7 @@
     <%= form.text_area :complaint, :class => 'form-control', :row => '3' %>
   </div>
 
-  <%= form.hidden_field :reporter, :value => current_user.id %>
+  <%= form.hidden_field :reporter, :value => Person.find_by_user_id(current_user.id).id %>
   <%= form.hidden_field :person_id, :value => @person.id %>
   <%= form.submit 'Submit', :class => 'btn btn-blue'%>
 

@@ -19,7 +19,7 @@
     <% end %>
 
     <!-- header start -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue stick-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -80,13 +80,15 @@
     </nav>
     <!-- header end -->
 
-    <%= yield %>
+    <main role="main" class="container pt-5">
+      <%= yield %>
+    </main>
 
     <!-- footer start -->
-    <footer class="page-footer font-small">
-        <div class="contianer-fluid text-center">
+    <footer class="sticky-footer page-footer font-small pt-5">
+        <div class="container-fluid text-center">
           <!-- Button trigger modal -->
-          <hr class="my-4">
+          <hr class="pt-2">
           <div class="row" style="margin: auto">
               <div class ="col-sm-12">
                   <button type="button" class="footer" data-toggle="modal" data-target="#about_modal">
@@ -106,7 +108,7 @@
                   </button>
               </div>
           </div>
-          <hr class="my-4">
+          <hr class="pb-2">
           <div class="row" style="margin: auto">
              <div class ="col-sm-12">
                  <p>© LNDR 2018</p>

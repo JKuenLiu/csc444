@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
 	        end
 	    end
 
-	    return remind_items
+        return remind_items
 	end
 
     def get_items_overdue
@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
 	        end
 	    end
 
-	    return overdue_items
+        return overdue_items
     end
 
     def get_pending_requests
@@ -131,6 +131,7 @@ class ApplicationController < ActionController::Base
                 end
             end
         end
+
         return pending_notifications
     end
 
@@ -159,6 +160,7 @@ class ApplicationController < ActionController::Base
                 end
             end
         end
+
         return pending_notifications
     end
 end
