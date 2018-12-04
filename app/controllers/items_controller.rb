@@ -60,6 +60,11 @@ class ItemsController < ApplicationController
         if @item.errors.any?
             render 'new'
         else
+            if params[:images]
+            params[:images].each { |image|
+              @item.pictures.create(image: image)
+            }
+        end
             redirect_to item_path(@item)
         end
     end
