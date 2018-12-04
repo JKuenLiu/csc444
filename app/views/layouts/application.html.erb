@@ -10,14 +10,6 @@
   </head>
 
   <body>
-
-    <% if notice %>
-      <p class="alert alert-success"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert alert-danger"><%= alert %></p>
-    <% end %>
-
     <!-- header start -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue fixed-top">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +72,13 @@
     </nav>
     <!-- header end -->
 
-    <main role="main" class="container pt-5">
+    <main role="main" class="container-fluid pt-5" style="padding: 0">
+        <% if notice %>
+          <p class="alert alert-success"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="alert alert-danger"><%= alert %></p>
+        <% end %>
       <%= yield %>
     </main>
 
