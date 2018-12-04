@@ -1,5 +1,5 @@
 class Person < ApplicationRecord
-    belongs_to :user
+    belongs_to :user, optional: true
     has_many :items, dependent: :destroy
     has_one_attached :avatar
     has_many :reviews
