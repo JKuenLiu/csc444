@@ -6,31 +6,31 @@
     <% action = (@user.locked ? "Unlock User's Account" : "Lock User's Account") %>
     <%= form_user.submit  action, :class => 'btn btn-blue'%>
 
-    <div class="row">
-      <% if @reports %>
-        <% @reports.reverse.each do |report| %>
-          <div class="col-2 mb-3">
-            <div class="card">
-              <div class=<%=report.resolved ? "card-body text-success" : "card-body text-danger" %>>
-                <div class="row justify-content-center">
-                  <% reporter = Person.find(report.reporter) %>
-                  <h5>Report by <%= reporter.fname %> <%= reporter.lname %>:</h5>
-                  <p><%= report.complaint %></p>
-                  <% if !report.resolved %>
-                    <%= form_for report, url: {action: :update, id: report.id}, local: true do |form| %>
-                        <%= form.hidden_field :resolved, :value => true%>
-                        <%= form.submit 'Resolve', :class => 'btn btn-blue'%>
-                    <% end %>
+  <% end %>
+
+  <div class="row">
+    <% if @reports %>
+      <% @reports.reverse.each do |report| %>
+        <div class="col-2 mb-3">
+          <div class="card">
+            <div class=<%=report.resolved ? "card-body text-success" : "card-body text-danger" %>>
+              <div class="row justify-content-center">
+                <% reporter = Person.find(report.reporter) %>
+                <h5>Report by <%= reporter.fname %> <%= reporter.lname %>:</h5>
+                <p><%= report.complaint %></p>
+                <% if !report.resolved %>
+                  <%= form_for report, url: {action: :update, id: report.id}, local: true do |form| %>
+                    <%= form.hidden_field :resolved, :value => true%>
+                    <%= form.submit 'Resolve', :class => 'btn btn-blue'%>
                   <% end %>
-                </div>
+                <% end %>
               </div>
             </div>
           </div>
-        <% end %>
+        </div>
       <% end %>
-    </div>
-  <% end %>
-
+    <% end %>
+  </div>
 
 
 
